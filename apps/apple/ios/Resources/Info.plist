@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDisplayName</key>
+	<string>Coherence</string>
+	<key>NSHealthShareUsageDescription</key>
+	<string>Coherence reads selected health and activity data to build your private timeline and compare measurement sessions with your own baseline.</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>Coherence saves only the workouts and measurements that you explicitly start.</string>
+	<key>UILaunchScreen</key>
+	<dict/>
+</dict>
+</plist>
