@@ -1,8 +1,8 @@
 # Coherence
 
-Coherence is Providence's dedicated ecosystem for consented interpersonal biometric measurement and reflection. The first product is a native iPhone application with an Apple Watch companion. Together they will establish trustworthy acquisition, timing, provenance, quality, offline recovery, and personal baselines before the project attempts group synchrony analysis.
+Coherence is Providence's dedicated ecosystem for consented interpersonal biometric measurement and reflection. Its first implementation is a native iPhone application with an Apple Watch companion. Together they will establish trustworthy acquisition, timing, provenance, quality, offline recovery, and personal baselines before the project attempts group synchrony analysis.
 
-This repository is an Apple first monorepo. It is designed to add facilitator surfaces, research tools, backend services, and complementary applications without forcing them into either Apple target.
+This is a cross platform monorepo with Apple as its first implementation and empirical proving ground. The product remains Coherence on every platform. Apple, Android, web, and future platform names identify implementation families, not separate product brands.
 
 ## Current foundation
 
@@ -10,8 +10,8 @@ The repository currently includes:
 
 1. Thin SwiftUI source shells for the iPhone and Apple Watch applications.
 2. HealthKit entitlement and permission source files for both applications.
-3. A local Swift package with compile boundaries for domain models, acquisition, persistence, synchronization, and deterministic features.
-4. Versioned `SensorSample`, `SampleBatch`, clock, provenance, quality, consent, and session contracts.
+3. A local Swift package with compile boundaries for provisional domain models, acquisition, persistence, synchronization, and deterministic features.
+4. Versioned `SensorSample`, `SampleBatch`, clock, provenance, quality, consent, and session models, plus an explicit home for canonical language neutral contracts.
 5. Shared package contract verification and a continuous integration entry point.
 6. A thesis grounded [architecture overview](docs/architecture/overview.md).
 7. A measured [Apple capability spike plan](docs/roadmap/apple-capability-spike.md).
@@ -19,22 +19,31 @@ The repository currently includes:
 9. A living [open technical questions register](docs/architecture/open-technical-questions.md).
 10. A target by target [Xcode application roadmap](docs/roadmap/xcode-application-roadmap.md).
 11. A durable [continuity brief synthesis](docs/research/continuity-brief-synthesis.md).
+12. An accepted [monorepo platform boundary decision](docs/architecture/decisions/0001-monorepo-platform-boundaries.md).
 
-The native Xcode project is the one intentionally missing piece. Xcode 26.6 and the iOS and watchOS platform SDKs are now installed, but Apple's license and first launch setup still require administrator approval. The source and target specification are ready in [apps/coherence-mobile](apps/coherence-mobile/README.md).
+The native Xcode project is the one intentionally missing piece. Xcode 26.6 and the iOS and watchOS platform SDKs are now installed, but Apple's license and first launch setup still require administrator approval. The source and target specification are ready in [apps/apple](apps/apple/README.md).
 
 ## Repository shape
 
-`apps/coherence-mobile` owns the iPhone and Apple Watch composition roots, interface code, resources, permissions, and entitlements.
+```text
+apps/                       executable applications grouped by platform
+  apple/                    iOS, watchOS, and future Apple targets
+packages/
+  contracts/                canonical schemas and conformance fixtures
+  swift/CoherenceKit/       reusable Swift implementation
+services/                   future deployable backend systems
+config/apple/xcode/         shared Apple build settings
+docs/                       architecture, research, and roadmaps
+scripts/                    repository health and validation
+```
 
-`packages/CoherenceKit` owns portable, testable Swift modules shared by Apple applications.
+Future Android applications belong under `apps/android`, with reusable Kotlin code under `packages/kotlin`. Future web surfaces belong under `apps/web`. Role names sit beneath a platform, such as `apps/web/facilitator`, rather than replacing the platform boundary.
 
-`config/xcode` owns checked in build settings. Developer team identifiers stay in an ignored local file.
+Applications may depend on language packages. Language packages may implement canonical contracts. Services and clients share schemas and conformance fixtures, never application source. Vendor APIs stay in platform adapters.
 
-`docs` owns architecture, source research, scientific boundaries, and experimental protocols.
+The current Swift models are provisional. `packages/contracts` becomes authoritative before a backend API or Android synchronization work begins. Its first encoding and fixture subset is also required before durable Apple transfer leaves the capability spike. This prevents Swift serialization details from becoming a treaty that every later platform signs under duress.
 
-`scripts` owns the local health check and validation entry point.
-
-Future applications belong under `apps`. Future backend services belong under `services`. Cross platform schemas and protocol fixtures should become their own package only when a second language actually consumes them.
+See [application boundaries](apps/README.md), [package boundaries](packages/README.md), and [service boundaries](services/README.md) for the ownership rules.
 
 ## Validate the current foundation
 

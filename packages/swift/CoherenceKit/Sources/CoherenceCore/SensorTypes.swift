@@ -20,12 +20,20 @@ public enum SensorValue: Codable, Equatable, Sendable {
   case vector([Double])
 }
 
-public enum SamplingMode: String, Codable, Equatable, Sendable {
-  case historicalImport
-  case passiveHealthKit
-  case liveWorkout
-  case bluetooth
+public enum CaptureIntent: String, Codable, Equatable, Hashable, Sendable {
+  case passive
+  case explicit
+  case imported
   case manual
+  case synthetic
+}
+
+public enum AcquisitionSourceKind: String, Codable, Equatable, Sendable {
+  case healthRepository
+  case liveWearable
+  case directPeripheral
+  case annotation
+  case synthetic
 }
 
 public enum QualityLevel: String, Codable, Equatable, Sendable {

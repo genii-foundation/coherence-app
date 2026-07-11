@@ -8,12 +8,12 @@ Research checked on July 10, 2026.
 
 Build Coherence as a local first physiological measurement and reflection system. Its first job is to produce trustworthy, consented, timestamped evidence from one participant. Its second job is to combine several proven individual data spines into cautious group observations. It should not begin by claiming to measure presence, relationship quality, truthfulness, wisdom, or a single quantity called coherence.
 
-The initial product should have two native applications:
+The initial Apple implementation should have two native applications:
 
 1. The Apple Watch application owns explicit measurement sessions, live sensor collection, immediate local buffering, and clear start, pause, stop, save, and discard controls.
 2. The iPhone application owns HealthKit history, consent, durable storage, session labeling, BLE peripherals, export, eventual upload, personal timelines, and group enrollment.
 
-Shared Swift modules define acquisition contracts and immutable data records. A backend enters only when a group pilot requires cross participant aggregation. Phase 0 should work without an account or server.
+Shared Swift modules provide the first implementation of acquisition ports and immutable data records. Canonical language neutral contracts will govern records that cross device, platform, or service boundaries. A backend enters only when a group pilot requires cross participant aggregation. Phase 0 should work without an account or server.
 
 The most important architectural decision is also the least theatrical: do not build a coherence score. Preserve raw facts, provenance, quality, context, and uncertainty. Derived interpretation can improve later. Missing source data cannot.
 
@@ -37,7 +37,7 @@ Raw heart rate and HRV values should not be compared between people. Every group
 
 ### Consent is data, not a screen
 
-Consent must be versioned and queryable by data class, collection mode, purpose, session, visibility, retention, raw or derived scope, research use, and future model use. A participant must be able to pause, leave, revoke, export, exclude, and delete.
+Consent must be versioned and queryable by data class, capture intent, acquisition source, purpose, session, visibility, retention, raw or derived scope, research use, and future model use. A participant must be able to pause, leave, revoke, export, exclude, and delete.
 
 ### Acquisition continues without connectivity
 
@@ -93,21 +93,33 @@ It is responsible for:
 
 ### Shared Swift package
 
-`packages/CoherenceKit` is one local Swift package with several compile boundaries.
+`packages/swift/CoherenceKit` is one local Swift package with several compile boundaries.
 
-`CoherenceCore` owns sensor samples, batches, units, clocks, provenance, quality, consent, and session state. It depends only on Foundation.
+`CoherenceCore` owns provisional Swift models for sensor samples, batches, units, clocks, provenance, quality, consent, and session state. It depends only on Foundation and uses platform neutral terminology.
 
-`CoherenceAcquisition` owns adapter contracts and later HealthKit, workout, motion, BLE, and manual annotation adapters.
+Acquisition records keep capture intent separate from acquisition source. Passive, explicit, imported, manual, and synthetic intent must not be conflated with a health repository, live wearable, direct peripheral, annotation, or synthetic generator. Transport is a third concern and belongs in delivery adapters.
 
-`CoherenceData` owns the append store, migrations, repositories, import anchors, acknowledgement state, and deletion tombstones.
+`CoherenceAcquisition` owns platform neutral adapter ports. HealthKit, workout, motion, BLE, Health Connect, and manual annotation adapters implement those ports without changing the domain vocabulary.
 
-`CoherenceSync` owns Watch and phone envelopes, reconciliation, acknowledgements, retry rules, and later backend upload.
+`CoherenceData` owns append storage, migrations, repositories, import anchors, and deletion tombstones. Delivery state belongs to a destination aware outbox rather than the physiological sample store.
+
+`CoherenceSync` owns envelopes, destination aware delivery outboxes, reconciliation, acknowledgements, and retry rules. Apple companion transfer and later backend upload are adapters over those semantics.
 
 `CoherenceFeatures` owns deterministic, versioned feature calculations. It does not own product language or group interpretation.
 
 SwiftUI screens, permission explanations, target lifecycle, and dependency composition stay in the application targets. The phone and Watch should not share interface code merely because Swift permits the mistake.
 
 Apple recommends local packages for modular code developed with an app. See [Organizing code with local packages](https://developer.apple.com/documentation/xcode/organizing-your-code-with-local-packages).
+
+### Platform and contract boundaries
+
+Coherence is one product. `apps/apple`, future `apps/android`, and future `apps/web` identify implementation families. They are not separate product brands.
+
+`packages/contracts` is the designated authority for language neutral schemas, semantic vocabularies, compatibility policy, and golden fixtures. The current Swift models remain provisional until a corresponding contract is accepted there. Default `Codable` behavior is not a wire specification because it does not settle timestamp precision, tagged unions, collection order, unknown values, or canonical digest bytes.
+
+Before durable companion transfer leaves the capability spike, define canonical encoding and fixtures for the records it carries. Before local persistence stabilizes, add a stream manifest that connects each batch to participant scope, modality, source, unit, timebase, provenance, and sequence semantics. Before backend or Android synchronization, require an independent non Swift validator to pass the same fixtures.
+
+Applications may depend on language packages. Language packages may implement canonical contracts. Services and clients share contracts and fixtures, never application source. Vendor specific framework types remain in adapters or namespaced provenance.
 
 ### Backend, when needed
 
@@ -210,12 +222,12 @@ Each normalized sample should preserve:
 4. Device wall time at observation.
 5. Host monotonic time when available.
 6. Phone, Watch, sensor, or server offset estimates and uncertainty when available.
-7. Sampling mode and optional nominal rate.
+7. Capture intent, acquisition source, and optional nominal rate.
 8. Sequence number when the source supplies or permits one.
 9. Structured quality level and flags.
-10. Source application, version, device, hardware, software, original identifier, and source metadata.
+10. Namespaced source identity, version, device, hardware, software, original identifier, and source metadata.
 
-The checked in `SensorSample` contract already represents these fields. Adapter specific raw metadata should be preserved in namespaced records rather than collapsed into one provenance score.
+The checked in provisional `SensorSample` model already represents these fields. Adapter specific raw metadata should be preserved in namespaced records rather than collapsed into one provenance score.
 
 ### Sample batch
 
@@ -301,7 +313,7 @@ The first useful group outputs are:
 6. Contributor count, coverage, and quality.
 7. Null comparisons using time shifts, participant shuffling, and unrelated sessions.
 
-Every result must include contributor count, collection mode, quality threshold, coverage, clock uncertainty, statistical uncertainty, algorithm version, and exploratory or validated status.
+Every result must include contributor count, capture intent, acquisition source class, quality threshold, coverage, clock uncertainty, statistical uncertainty, algorithm version, and exploratory or validated status.
 
 Shared music, guided breathing, movement, posture, temperature, meals, schedule, and facilitator cues can create shared response without interpersonal coupling. Respiration and motion are especially important confounds. The product must never present a shared stimulus response as evidence that nervous systems directly influenced one another.
 
@@ -358,7 +370,7 @@ The unresolved brief decisions should begin with these working defaults:
 4. Feedback: private post session reflection by default; live feedback is experimental.
 5. Facilitator visibility: group aggregate only by default.
 6. Cloud boundary: no server data in Phase 0; event specific consent before group upload.
-7. Platform: Apple only through acquisition and scientific validation.
+7. Platform: Apple first for capability and scientific validation, while domain, storage, and protocol boundaries remain platform neutral from the beginning.
 8. Watchless use: historical and annotation modes may work, but live Apple heart rate requires a supported source.
 9. Group metrics: not required for the first technical milestone and not marketed as coherence until validated.
 10. Battery and latency: measured over one, three, and six hour sessions before targets are promised.
@@ -367,39 +379,40 @@ The unresolved brief decisions should begin with these working defaults:
 
 Keep application composition separate from reusable capabilities.
 
-The next likely top level additions are:
+The next likely additions are:
 
-1. `apps/facilitator`, after a group pilot has a defined surface.
-2. `apps/research-capture`, if researchers need a controlled device or desktop gateway.
-3. `services/ingestion`, when event upload begins.
-4. `services/group-analysis`, after individual feature contracts stabilize.
-5. `packages/protocol-fixtures`, only when backend code in another language needs the same canonical payload tests.
+1. Canonical records and golden fixtures under `packages/contracts`, before durable protocols stabilize.
+2. `services/ingestion`, when event upload begins.
+3. `services/group-analysis`, after individual feature contracts stabilize.
+4. `apps/web/facilitator`, if the group pilot needs a browser based facilitator surface.
+5. `apps/apple/macos/research-capture`, if researchers need a controlled Apple desktop gateway.
+6. `apps/android` and `packages/kotlin`, when the Android entry criteria in the roadmap are met.
 
-Do not split the Swift package into several repositories. Coordinated schema, acquisition, and application changes are the point of this monorepo. Split only when ownership, release cadence, or security boundaries become materially different.
+Do not split the Swift package into several repositories. Coordinated schema, acquisition, and application changes are the point of this monorepo. Split only when ownership, release cadence, or security boundaries become materially different. See the accepted [platform boundary decision](decisions/0001-monorepo-platform-boundaries.md).
 
 ## Delivery sequence
 
 ### Foundation, complete in this initialization
 
-The repository now has app source roots, target metadata, entitlements, shared module boundaries, provisional core data contracts, contract verification, validation scripts, continuous integration, and this architecture record.
+The repository now has platform specific app roots, language specific package roots, a canonical contract boundary, target metadata, entitlements, shared module boundaries, provisional Swift data models, contract verification, validation scripts, continuous integration, and this architecture record.
 
 ### Native Apple project bootstrap
 
 Accept the installed Xcode license and complete first launch setup. Create the iPhone application with a companion Watch target using Xcode's native template. Attach the checked in source roots and local Swift package. Commit the project and add simulator build validation.
 
-### Phase 0 capability spike
+### Phase 1 Apple capability spike
 
 Follow [the capability spike plan](../roadmap/apple-capability-spike.md). The deliverable is an empirical matrix covering real devices, cadence, gaps, latency, background behavior, disconnection, reconciliation, provenance, battery, and export.
 
-### Phase 1 individual data spine
+### Phase 2 individual data spine
 
 Implement staged HealthKit history, SQLite persistence, local consent, session labels, durable Watch sync, export, personal timeline, and diagnostics.
 
-### Phase 2 external heart sensor
+### Phase 3 external heart sensor
 
 Implement generic BLE heart rate and RR interval collection, then validate Polar H10 ECG and motion access separately.
 
-### Phase 3 group pilot
+### Phases 4 and 5 group pilot
 
 Add event enrollment, explicit session schedule, consent eligible upload, delayed aggregation, facilitator coverage views, personal reflection, null comparisons, and deletion recomputation.
 

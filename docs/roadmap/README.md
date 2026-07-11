@@ -28,17 +28,18 @@ Status: Complete
 
 ### Objective
 
-Create a monorepo foundation that can host the native Apple applications, shared Swift capabilities, later facilitator and research applications, and eventual backend services.
+Create a cross platform monorepo foundation that can host the first native Apple applications, future Android and web applications, language specific implementations, canonical contracts, research tools, and eventual backend services.
 
 ### Delivered scope
 
-1. iPhone and Apple Watch source roots, property lists, and HealthKit entitlements.
-2. A shared local Swift package with Core, Acquisition, Data, Sync, and Features boundaries.
-3. Versioned sample, batch, provenance, clock, quality, consent, session, sync, and feature contracts.
+1. Platform specific iPhone and Apple Watch source roots, property lists, and HealthKit entitlements under `apps/apple`.
+2. A shared local Swift package under `packages/swift` with Core, Acquisition, Data, Sync, and Features boundaries.
+3. Provisional versioned sample, batch, provenance, clock, quality, consent, session, sync, and feature models.
 4. Shared package contract verification and continuous integration.
 5. A thesis grounded architecture overview and source map.
 6. A physical device capability spike protocol.
 7. This unified roadmap and the living technical questions register.
+8. An accepted platform boundary decision and a designated canonical contract home under `packages/contracts`.
 
 ### Exit evidence
 
@@ -64,7 +65,7 @@ Create a trustworthy native target graph for the iPhone application and its comp
 
 ### Implementation scope
 
-1. Use Xcode's companion Watch application template inside `apps/coherence-mobile`.
+1. Use Xcode's companion Watch application template inside `apps/apple`.
 2. Create `CoherenceApp`, `CoherenceWatchApp`, `CoherenceAppTests`, `CoherenceAppUITests`, and `CoherenceWatchAppTests` targets.
 3. Use iOS 18 and watchOS 11 as provisional deployment floors.
 4. Attach the existing application sources, resources, property lists, and entitlements.
@@ -126,6 +127,14 @@ Measure what current Apple hardware and public APIs actually support before desi
 13. Add battery, thermal, cadence, gap, latency, connectivity, and clock uncertainty diagnostics.
 14. Add deliberate disruption controls for development builds.
 
+### Contract work
+
+1. Decide the initial canonical representation for streams, samples, batches, acknowledgements, and session events.
+2. Define timestamp, identifier, unit, ordering, unknown value, and digest rules under `packages/contracts`.
+3. Add golden valid, invalid, corruption, and prior version fixtures.
+4. Make the Swift encoder and decoder pass those fixtures.
+5. Keep HealthKit, workout, Apple Watch, and WatchConnectivity names in Apple adapters or namespaced provenance.
+
 ### Physical experiments
 
 Run quiet rest, conversation, paced breathing, meditation or Qigong, walking, a meal period, screen sleep, phone lock, temporary phone disconnection, Watch backgrounding, and reconnection.
@@ -142,6 +151,7 @@ Run one, three, and six hour battery sessions on the oldest supported Watch and 
 6. Battery and sampling reports cover one, three, and six hours.
 7. App lifecycle behavior is documented for normal exit, crash, and force quit.
 8. The repository contains a go, revise, or stop decision for Phase 2.
+9. Durable transfer records have accepted canonical encoding rules and Swift conformance fixtures.
 
 ### Decisions closed in this phase
 
@@ -152,6 +162,7 @@ Run one, three, and six hour battery sessions on the oldest supported Watch and 
 5. Active buffer file protection class.
 6. Measured battery and latency budgets.
 7. Initial HealthKit read and write set.
+8. Initial durable contract representation, digest rules, and compatibility window.
 
 ## Phase 2: Local single participant data spine
 
@@ -164,8 +175,10 @@ Turn the capability prototype into a reliable, private personal measurement prod
 ### Entry criteria
 
 1. Phase 1 produces a go or bounded revise decision.
-2. Source of truth, local encryption, deletion, and schema questions have provisional decision records.
-3. The chosen SQLite approach passes locked device and background write tests.
+2. Source of truth, local encryption, deletion, schema, and conformance questions have provisional decision records.
+3. A stream manifest defines participant scope, source, modality, unit, timebase, provenance, and sequence semantics.
+4. Append only physiological storage is separate from destination aware delivery outboxes.
+5. The chosen SQLite approach passes locked device and background write tests.
 
 ### Xcode application work
 
@@ -183,6 +196,7 @@ Turn the capability prototype into a reliable, private personal measurement prod
 12. Add a privacy safe diagnostics bundle.
 13. Add migrations, interruption, corruption, and low storage tests.
 14. Add accessibility, localization readiness, and interface state tests.
+15. Preserve canonical contract fixtures as persistence and export formats evolve.
 
 ### Exit criteria
 
@@ -249,8 +263,10 @@ Add the smallest backend required for consented multi participant events without
 ### Entry criteria
 
 1. Phase 2 is Complete. Phase 3 may proceed in parallel only after schemas are stable.
-2. Identity, cloud topology, server retention, residency, consent, deletion, and threat model decisions are approved.
-3. A group pilot has a named use case and participant policy.
+2. `packages/contracts` is authoritative for every uploaded record and its compatibility policy.
+3. At least one independent non Swift validator passes all accepted contract fixtures.
+4. Identity, cloud topology, server retention, residency, consent, deletion, and threat model decisions are approved.
+5. A group pilot has a named use case and participant policy.
 
 ### Client work
 
@@ -313,6 +329,36 @@ Combine several participant data spines into transparent, delayed group observat
 5. Participant deletion invalidates and recomputes affected aggregates.
 6. Product language remains exploratory and nonmedical.
 
+## Parallel Android delivery track
+
+Status: Waiting for product trigger and contract readiness
+
+Android is a planned Coherence implementation. It is not deferred until ecosystem hardening, and it does not need to mimic every Apple capability before delivering value.
+
+### Entry criteria
+
+1. Phase 1 has measured the Apple acquisition assumptions that inform parity decisions.
+2. A named pilot, reach goal, or Android specific capability justifies implementation.
+3. `packages/contracts` covers the records the Android client will store or synchronize.
+4. OTQ-028 has an approved entry decision and capability spike plan.
+5. Kotlin conformance tests can run against the canonical fixtures.
+
+### Delivery stages
+
+1. Create `apps/android` and `packages/kotlin` only when implementation starts.
+2. Run a phone and wearable capability spike covering Health Connect, Wear OS, BLE, background execution, timestamp quality, battery, and repository deletion behavior.
+3. Ship the smallest useful Android surface, which may begin with history, annotations, event enrollment, exports, or external BLE sensing.
+4. Add wearable live acquisition only where measured platform behavior supports the same quality and consent promises.
+5. Keep platform capability classes visible so group analysis never treats unlike sources as equivalent by wishful thinking.
+6. Require Kotlin to pass the same valid, invalid, compatibility, digest, and unknown value fixtures before synchronization ships.
+
+### Exit criteria for interoperable Android synchronization
+
+1. Android records preserve the same provenance, timing, consent, deletion, and uncertainty semantics.
+2. Swift, Kotlin, and service validators agree on canonical bytes and digests.
+3. Cross version synchronization passes the approved compatibility matrix.
+4. Platform specific quality differences are represented explicitly in analysis inputs.
+
 ## Phase 6: Scientific validation and feedback experiments
 
 Status: Waiting for Phase 5
@@ -371,7 +417,7 @@ Status: Deferred
 
 Prepare validated capabilities for broader deployment and complementary applications.
 
-Potential work includes facilitator applications, research capture tools, international residency, advanced recovery, operational monitoring, customer administration, App Store production review, external security assessment, legal review, and selected cross platform support.
+Potential work includes facilitator applications, research capture tools, international residency, advanced recovery, operational monitoring, customer administration, store production review across active platforms, external security assessment, legal review, and hardening of every implementation already justified by evidence.
 
 This phase does not begin until the scientific and privacy foundations survive real pilots. Scale is not a substitute for being right. It merely distributes the error more efficiently.
 
@@ -389,3 +435,5 @@ Every phase must preserve these requirements:
 8. No medical, emotional truth, relationship quality, or physiological ranking claim.
 9. No closed technical question without a decision record.
 10. No completed phase without an updated roadmap and validation evidence.
+11. No vendor API name or serialization default becomes a canonical domain or wire contract.
+12. No interoperable implementation ships without passing the shared conformance fixtures.

@@ -43,11 +43,15 @@ struct CoherenceCoreVerification {
         ],
         timeZoneIdentifier: "America/Los_Angeles"
       ),
-      samplingMode: .liveWorkout,
+      captureIntent: .explicit,
+      acquisitionSource: .liveWearable,
       sequenceNumber: 1,
       quality: SignalQuality(level: .good),
       provenance: SampleProvenance(
-        sourceBundleIdentifier: "com.apple.health",
+        source: SourceIdentity(
+          namespace: "apple.bundle",
+          identifier: "com.apple.health"
+        ),
         deviceManufacturer: "Apple Inc.",
         deviceModel: "Watch",
         originalSampleIdentifier: UUID().uuidString
@@ -82,7 +86,8 @@ struct CoherenceCoreVerification {
         deviceWallTime: timestamp,
         timeZoneIdentifier: "UTC"
       ),
-      samplingMode: .liveWorkout
+      captureIntent: .explicit,
+      acquisitionSource: .liveWearable
     )
 
     do {

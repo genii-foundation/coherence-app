@@ -21,14 +21,16 @@ Every investigation should identify an owner, evidence, decision deadline, and a
 The following questions deserve first attention:
 
 1. OTQ-001, authority by data class.
-2. OTQ-005, local storage encryption and locked device access.
-3. OTQ-009, Watch to phone live and durable transport.
-4. OTQ-011, time synchronization and uncertainty limits.
-5. OTQ-013, legitimate workout classification.
-6. OTQ-014, initial HealthKit authorization set.
-7. OTQ-015, device and operating system floor.
-8. OTQ-017, personal baseline version 1.
-9. OTQ-018, feedback timing.
+2. OTQ-004, canonical sample and batch encoding.
+3. OTQ-005, local storage encryption and locked device access.
+4. OTQ-009, Watch to phone live and durable transport.
+5. OTQ-011, time synchronization and uncertainty limits.
+6. OTQ-013, legitimate workout classification.
+7. OTQ-014, initial HealthKit authorization set.
+8. OTQ-015, device and operating system floor.
+9. OTQ-017, personal baseline version 1.
+10. OTQ-018, feedback timing.
+11. OTQ-031, cross platform contract conformance.
 
 ## Data authority and provenance
 
@@ -40,7 +42,7 @@ Decision deadline: Phase 2 entry
 
 Current leaning: Avoid declaring one universal source of truth. Use explicit authority by record type.
 
-HealthKit is likely authoritative for samples and deletions it manages. The Coherence local store is likely authoritative for session boundaries, consent receipts, annotations, normalized acquisition records, transfer state, quality decisions, and derived features. A future server is likely authoritative only for the exact uploaded batch, server acknowledgement, event policy, and group outputs it computes.
+A platform health repository is likely authoritative for samples and deletions it manages. HealthKit is the first implementation. Google Health Connect or another Android repository may later hold the same role for records it manages. The Coherence local store is likely authoritative for session boundaries, consent receipts, annotations, normalized acquisition records, transfer state, quality decisions, and derived features. A future server is likely authoritative only for the exact uploaded batch, server acknowledgement, event policy, and group outputs it computes.
 
 Questions:
 
@@ -75,7 +77,7 @@ Status: Open
 
 Decision deadline: Phase 1 exit
 
-Current leaning: Store structured facts, never a magic provenance score. HealthKit source revision, device, UUID, metadata, algorithm version, application version, collection mode, and import path are evidence, not cryptographic attestation.
+Current leaning: Store structured facts, never a magic provenance score. HealthKit source revision, device, UUID, metadata, algorithm version, application version, capture intent, acquisition source, and import path are evidence, not cryptographic attestation.
 
 Questions:
 
@@ -90,9 +92,9 @@ Questions:
 
 Status: Open
 
-Decision deadline: Phase 1 exit
+Decision deadline: Before durable Phase 1 companion transfer is accepted
 
-Current leaning: Swift domain types are the current semantic source. Durable transfer needs a canonical binary or JSON encoding, stable field identifiers, explicit units, schema version, and SHA-256 content digest.
+Current leaning: The Swift types are provisional implementation models, not the semantic authority. `packages/contracts` should define the accepted language neutral representation, explicit units, schema version, compatibility policy, canonical bytes, and content digest rules. Begin with the records required for durable Apple transfer, then extend the same contract family for backend and Android interoperability.
 
 Questions:
 
@@ -102,6 +104,10 @@ Questions:
 4. What compatibility window must clients and services support?
 5. Which fields participate in the content digest?
 6. How are floating point values normalized for a stable digest?
+7. What timestamp epoch and precision are canonical?
+8. How are UUIDs, tagged unions, sets, maps, and unknown enum values represented?
+9. Which unit vocabulary is required, and where does UCUM not fit?
+10. What stream manifest connects a batch to participant scope, source, modality, unit, timebase, provenance, and sequence semantics?
 
 ## Local security and storage
 
@@ -477,16 +483,37 @@ Questions:
 
 ### OTQ-028: When should Android or non Apple applications enter the monorepo?
 
-Status: Deferred to Phase 9
+Status: Open
 
-Current leaning: Remain Apple only through acquisition and early scientific validation. Extract cross platform schemas when a second implementation exists.
+Decision deadline: Phase 2 exit or before the first Android capability spike, whichever comes first
+
+Current leaning: Android is a planned Coherence implementation, not an optional rebranding exercise. Apple remains the first acquisition proving ground. Android discovery may begin after the Apple capability spike, and implementation should begin when pilot recruitment, reach, or a distinct Android capability justifies it. Repository and contract boundaries support that work now.
 
 Questions:
 
 1. Does early Android support materially improve pilot recruitment?
 2. Which wearable APIs offer comparable acquisition semantics?
 3. Can group metrics compare sources with different cadence and quality?
-4. Which shared protocol should move outside Swift, and when?
+4. Which first Android surface is useful without assuming Watch parity?
+5. What Health Connect, Wear OS, BLE, background, and battery capability spike is required?
+6. Which source differences require separate quality classes or analysis strata?
+
+### OTQ-031: How will every language prove contract conformance?
+
+Status: Open
+
+Decision deadline: Initial fixture subset before Phase 1 durable transfer, independent validator before Phase 4 or Android synchronization
+
+Current leaning: Keep canonical schemas, vocabularies, fixtures, and compatibility rules in `packages/contracts`. Swift, future Kotlin, and service implementations must consume the same valid, invalid, corruption, prior version, and unknown value fixtures. Generated bindings are preferred only where they preserve readable domain boundaries and safe migration behavior.
+
+Questions:
+
+1. Which schema technology provides stable tagged types and usable Swift, Kotlin, and service bindings?
+2. Which parts should be generated, and which should be handwritten adapters?
+3. What independent validator language provides enough evidence before a backend exists?
+4. How are fixture changes reviewed and versioned?
+5. What compatibility matrix must old clients, new clients, and services pass?
+6. How does continuous integration prevent a language implementation from accepting a different digest or unknown value policy?
 
 ## Governance questions
 

@@ -85,7 +85,7 @@ Important refinements made in this repository are:
 
 1. Structured provenance replaces a single provenance score.
 2. Nominal sample rate is optional because many sources are irregular.
-3. Consent includes collection mode, session, retention, representation, research, and model scope.
+3. Consent includes capture intent, acquisition source, session, retention, representation, research, and model scope.
 4. Clock estimates are versioned records for any reference device, not one mutable server offset.
 5. Physical delivery is at least once. Stable identifiers and required content digests provide one logical record.
 6. Deletion is scoped and must invalidate derived results.
@@ -95,7 +95,7 @@ Important refinements made in this repository are:
 
 Begin with mean normalized state change, dispersion, directional agreement, pairwise association, subgroup structure, coverage, and null comparisons. Add phase locking, recurrence, mutual information, network synchrony, or latent models only when source cadence and validation support them.
 
-Every result includes contributor count, collection mode, quality threshold, coverage, clock uncertainty, statistical uncertainty, algorithm version, and exploratory or validated status.
+Every result includes contributor count, capture intent, acquisition source class, quality threshold, coverage, clock uncertainty, statistical uncertainty, algorithm version, and exploratory or validated status.
 
 ## Sensor order
 

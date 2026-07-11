@@ -1,11 +1,5 @@
 import Foundation
 
-public enum MeasurementCollectionMode: String, Codable, Equatable, Hashable, Sendable {
-  case passive
-  case explicitWatch
-  case externalSensor
-}
-
 public enum MeasurementSessionState: String, Codable, Equatable, Sendable {
   case prepared
   case recording
@@ -19,7 +13,7 @@ public struct MeasurementSession: Identifiable, Codable, Equatable, Sendable {
   public let participantID: UUID
   public let eventID: UUID?
   public let activityLabel: String?
-  public let collectionMode: MeasurementCollectionMode
+  public let captureIntent: CaptureIntent
   public let state: MeasurementSessionState
   public let startedAt: Date?
   public let endedAt: Date?
@@ -29,7 +23,7 @@ public struct MeasurementSession: Identifiable, Codable, Equatable, Sendable {
     participantID: UUID,
     eventID: UUID? = nil,
     activityLabel: String? = nil,
-    collectionMode: MeasurementCollectionMode,
+    captureIntent: CaptureIntent,
     state: MeasurementSessionState,
     startedAt: Date? = nil,
     endedAt: Date? = nil
@@ -38,7 +32,7 @@ public struct MeasurementSession: Identifiable, Codable, Equatable, Sendable {
     self.participantID = participantID
     self.eventID = eventID
     self.activityLabel = activityLabel
-    self.collectionMode = collectionMode
+    self.captureIntent = captureIntent
     self.state = state
     self.startedAt = startedAt
     self.endedAt = endedAt

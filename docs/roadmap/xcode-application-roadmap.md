@@ -1,10 +1,10 @@
 # Xcode application roadmap
 
-This document controls the native iPhone and Apple Watch application architecture. The [unified roadmap](README.md) controls phase order. This document explains how the Xcode targets and Swift modules should evolve inside those phases.
+This document controls the first Apple implementation of Coherence. The [unified roadmap](README.md) controls phase order and cross platform gates. This document explains how the Xcode targets and Swift modules should evolve inside those phases. It does not define the product boundary or the canonical cross platform protocol.
 
 ## Native target graph
 
-Create one committed Xcode project at `apps/coherence-mobile/Coherence.xcodeproj`.
+Create one committed Xcode project at `apps/apple/Coherence.xcodeproj`.
 
 The initial targets are:
 
@@ -37,7 +37,7 @@ The shared schemes are `Coherence` and `CoherenceWatch`. Check them into source 
 
 Add `CoherenceFeatures` to Watch only when a measured low latency feature needs local computation. The phone remains the first home for personal feature computation.
 
-Application targets own SwiftUI screens, lifecycle hooks, platform permission copy, and dependency composition. Shared modules own logic that is meaningful outside one screen or one executable.
+Application targets own SwiftUI screens, lifecycle hooks, platform permission copy, and dependency composition. Shared modules own logic that is meaningful outside one screen or one executable. Apple adapters may name HealthKit, workouts, and WatchConnectivity. Core domain models may not.
 
 ## Application state architecture
 
@@ -248,7 +248,7 @@ Roadmap phase: 2
 
 1. Implement GRDB migrations and repositories.
 2. Decide and test Data Protection and database encryption.
-3. Add consent receipts with collection mode, session, retention, representation, research, and model scopes.
+3. Add consent receipts with capture intent, acquisition source, session, retention, representation, research, and model scopes.
 4. Add session labels and annotation history.
 5. Add transparent personal baseline features.
 6. Build the personal timeline and quality explanations.
@@ -336,7 +336,7 @@ Do not show a coherence score. During observational sessions, do not show physio
 
 ### Shared module verification
 
-1. Codable and canonical fixture round trips.
+1. Swift model round trips and canonical contract fixture conformance.
 2. Batch validation, digest conflict, ordering, and schema compatibility.
 3. Consent scope evaluation.
 4. Session event projection.
@@ -364,7 +364,7 @@ Use physical devices for HealthKit authorization, workout sensors, mirrored sess
 
 ## Build configuration and continuous integration
 
-Keep `Base.xcconfig`, `Debug.xcconfig`, `Release.xcconfig`, and optional ignored `Local.xcconfig` as the shared settings source.
+Keep `config/apple/xcode/Base.xcconfig`, `Debug.xcconfig`, `Release.xcconfig`, and optional ignored `Local.xcconfig` as the shared settings source.
 
 Continuous integration should eventually:
 
@@ -384,8 +384,8 @@ After administrator approval is available:
 1. Accept the installed Xcode license.
 2. Complete first launch setup.
 3. Verify iPhone and Watch simulator runtimes.
-4. Create the native companion project in `apps/coherence-mobile`.
-5. Attach the existing sources and `CoherenceKit` package.
+4. Create the native companion project in `apps/apple`.
+5. Attach the existing sources and `packages/swift/CoherenceKit` package.
 6. Wire capabilities and build settings.
 7. Create shared schemes.
 8. Build and launch both shells in paired simulators.

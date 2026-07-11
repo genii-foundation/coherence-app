@@ -11,9 +11,5 @@ jobs:
     runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
-      - name: Build shared Swift modules
-        working-directory: packages/CoherenceKit
-        run: DEVELOPER_DIR=/Library/Developer/CommandLineTools swift build --build-system native
-      - name: Verify shared data contracts
-        working-directory: packages/CoherenceKit
-        run: DEVELOPER_DIR=/Library/Developer/CommandLineTools swift run --build-system native CoherenceCoreVerification
+      - name: Validate shared foundation
+        run: ./scripts/validate.sh

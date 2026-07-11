@@ -9,7 +9,8 @@ public struct SensorSample: Identifiable, Codable, Equatable, Sendable {
   public let sourceStartTime: Date
   public let sourceEndTime: Date?
   public let observedAt: ClockContext
-  public let samplingMode: SamplingMode
+  public let captureIntent: CaptureIntent
+  public let acquisitionSource: AcquisitionSourceKind
   public let sequenceNumber: UInt64?
   public let nominalSamplingRateHertz: Double?
   public let quality: SignalQuality
@@ -24,7 +25,8 @@ public struct SensorSample: Identifiable, Codable, Equatable, Sendable {
     sourceStartTime: Date,
     sourceEndTime: Date? = nil,
     observedAt: ClockContext,
-    samplingMode: SamplingMode,
+    captureIntent: CaptureIntent,
+    acquisitionSource: AcquisitionSourceKind,
     sequenceNumber: UInt64? = nil,
     nominalSamplingRateHertz: Double? = nil,
     quality: SignalQuality = .init(),
@@ -38,7 +40,8 @@ public struct SensorSample: Identifiable, Codable, Equatable, Sendable {
     self.sourceStartTime = sourceStartTime
     self.sourceEndTime = sourceEndTime
     self.observedAt = observedAt
-    self.samplingMode = samplingMode
+    self.captureIntent = captureIntent
+    self.acquisitionSource = acquisitionSource
     self.sequenceNumber = sequenceNumber
     self.nominalSamplingRateHertz = nominalSamplingRateHertz
     self.quality = quality

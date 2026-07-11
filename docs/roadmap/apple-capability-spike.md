@@ -8,8 +8,8 @@ This is the first implementation milestone. Its purpose is to replace platform a
 
 1. Accept Apple's license for the installed Xcode 26.6 application.
 2. Complete Xcode first launch setup and verify the installed iOS and watchOS platforms.
-3. Create the native iPhone application with a companion Watch application in `apps/coherence-mobile`.
-4. Attach the checked in source directories, property lists, entitlements, build settings, and local `CoherenceKit` package.
+3. Create the native iPhone application with a companion Watch application in `apps/apple`.
+4. Attach the checked in source directories, property lists, entitlements, build settings, and local `packages/swift/CoherenceKit` package.
 5. Choose the Providence Apple developer team and place its identifier in ignored local configuration.
 6. Add iOS, watchOS, and package build checks to `scripts/validate.sh` and continuous integration.
 7. Use physical devices for every background, HealthKit, battery, and WatchConnectivity conclusion.

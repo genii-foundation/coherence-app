@@ -33,7 +33,7 @@ public struct ConsentGrant: Identifiable, Codable, Equatable, Sendable {
   public let eventID: UUID?
   public let sessionID: UUID?
   public let dataClasses: Set<ConsentDataClass>
-  public let collectionModes: Set<MeasurementCollectionMode>
+  public let captureIntents: Set<CaptureIntent>
   public let representations: Set<ConsentRepresentation>
   public let purpose: String
   public let visibility: ConsentVisibility
@@ -51,7 +51,7 @@ public struct ConsentGrant: Identifiable, Codable, Equatable, Sendable {
     eventID: UUID? = nil,
     sessionID: UUID? = nil,
     dataClasses: Set<ConsentDataClass>,
-    collectionModes: Set<MeasurementCollectionMode>,
+    captureIntents: Set<CaptureIntent>,
     representations: Set<ConsentRepresentation>,
     purpose: String,
     visibility: ConsentVisibility,
@@ -68,7 +68,7 @@ public struct ConsentGrant: Identifiable, Codable, Equatable, Sendable {
     self.eventID = eventID
     self.sessionID = sessionID
     self.dataClasses = dataClasses
-    self.collectionModes = collectionModes
+    self.captureIntents = captureIntents
     self.representations = representations
     self.purpose = purpose
     self.visibility = visibility

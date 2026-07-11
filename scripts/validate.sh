@@ -3,7 +3,18 @@ set -eu
 
 root=$(CDPATH= cd "$(dirname "$0")/.." && pwd)
 
-cd "$root/packages/CoherenceKit"
+if [ -d "$root/apps/coherence-mobile" ]; then
+    printf 'Application implementations must be grouped by platform under apps, not under apps/coherence-mobile.\n' >&2
+    exit 1
+fi
+
+core="$root/packages/swift/CoherenceKit/Sources/CoherenceCore"
+if grep -ERn 'HealthKit|WatchConnectivity|Apple Watch|Health Connect|Wear OS' "$core"; then
+    printf 'Vendor API names must remain outside CoherenceCore.\n' >&2
+    exit 1
+fi
+
+cd "$root/packages/swift/CoherenceKit"
 DEVELOPER_DIR=/Library/Developer/CommandLineTools swift build --build-system native
 DEVELOPER_DIR=/Library/Developer/CommandLineTools swift run --build-system native CoherenceCoreVerification
 

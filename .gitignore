@@ -6,5 +6,5 @@ DerivedData/
 xcuserdata/
 
 # Local secrets and signing configuration.
-config/xcode/Local.xcconfig
+config/apple/xcode/Local.xcconfig
 *.env
