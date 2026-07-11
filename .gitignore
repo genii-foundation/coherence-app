@@ -1,0 +1,10 @@
+.DS_Store
+.build/
+.swiftpm/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+
+# Local secrets and signing configuration.
+config/xcode/Local.xcconfig
+*.env

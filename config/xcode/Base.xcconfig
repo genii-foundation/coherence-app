@@ -1,0 +1,9 @@
+SWIFT_VERSION = 6.0
+SWIFT_STRICT_CONCURRENCY = complete
+ENABLE_USER_SCRIPT_SANDBOXING = YES
+CODE_SIGN_STYLE = Automatic
+
+// Set this value in Local.xcconfig after the Apple team is chosen.
+DEVELOPMENT_TEAM =
+
+#include? "Local.xcconfig"
