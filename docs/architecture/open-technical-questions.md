@@ -147,11 +147,13 @@ Questions:
 
 ### OTQ-007: What belongs in logs, analytics, and crash reports?
 
-Status: Open
+Status: Investigating
 
 Decision deadline: Phase 1 entry
 
 Current leaning: No biometric values, raw timestamps tied to identity, HealthKit metadata, consent contents, session labels, or peer identifiers leave the device through general telemetry.
+
+Build Slice B preparation: Diagnostic schema version 1 uses a per-launch run identifier, with fixed identifiers only in deterministic fixtures. It includes application and capability state, requested acquisition intents, projected authorization state, request identifiers and results, and sanitized error codes. It explicitly marks biometric values, participant identity, and persistent device identifiers as excluded. Unit coverage rejects accidental sample, participant, and source timestamp fields. This is simulator implementation evidence, not an approved telemetry policy. File protection, export retention, crash reporting, analytics, and third party SDK policy remain undecided.
 
 Questions:
 
@@ -266,11 +268,13 @@ Questions:
 
 ### OTQ-014: Which HealthKit types should be requested, read, and written?
 
-Status: Open
+Status: Investigating
 
 Decision deadline: Phase 1 exit
 
-Current leaning: Begin with heart rate, HRV SDNN, resting heart rate, workouts, respiratory rate, sleep analysis, step count, and active energy as staged reads. Write only explicit Coherence workout outputs required by the tested session model.
+Current leaning: Begin the physical capability spike with the smallest request that can answer the first experiment. The phone first requests heart rate history read access only. The Watch first requests live heart rate read access and workout write access for an explicit participant directed measurement. Add HRV SDNN, resting heart rate, respiratory rate, sleep analysis, step count, and active energy only in later staged requests with a visible product purpose. Write only explicit Coherence workout outputs required by the tested session model.
+
+Build Slice B preparation: The platform neutral model distinguishes historical heart rate, historical HRV, live heart rate, and workout recording intents. The Apple adapter currently maps only the minimum phone and Watch plans above. HealthKit read decisions are projected as `notInspectable`. The adapter can inspect workout write status, and it uses request status only to learn whether the system may need to ask again. Request completion is recorded without claiming that any read type was granted. Simulator fixtures exercise these semantics, but no real authorization outcome or query behavior has physical evidence yet.
 
 Questions:
 
@@ -280,6 +284,7 @@ Questions:
 4. Should mindful sessions be read or written?
 5. Does adding motion through Core Motion reduce the need for activity types?
 6. Which permissions are requested during onboarding versus feature use?
+7. How should the interface explain an empty query result when the app cannot distinguish a denied read choice from no matching data?
 
 ### OTQ-015: What are the supported device and OS floors?
 

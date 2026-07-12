@@ -20,7 +20,7 @@ Phase 0A is Complete.
 
 Phase 0B is Complete. The native target graph, deterministic simulator composition, paired simulator validation, and pinned continuous integration are in the repository.
 
-Phase 1 is Waiting for a selected Apple developer team, local physical signing, and a paired physical iPhone and Apple Watch. It becomes Ready only when every entry criterion below is satisfied.
+Phase 1 is Waiting for a selected Apple developer team, local physical signing, and a paired physical iPhone and Apple Watch. Simulator safe Build Slice B preparation does not change that status. Phase 1 becomes Ready only when every entry criterion below is satisfied.
 
 ## Phase 0A: Repository and architecture foundation
 
@@ -117,15 +117,30 @@ Measure what current Apple hardware and public APIs actually support before desi
 4. A synthetic participant and redacted export location are defined.
 5. The [capability spike protocol](apple-capability-spike.md) is reviewed.
 
+### Pre-entry implementation preparation
+
+Useful simulator work may prepare a physical experiment without pretending the experiment happened. The repository now includes:
+
+1. A phone privacy, requested access, overview, and diagnostic flow that must precede any system HealthKit sheet.
+2. A Watch preparation surface that explains live heart rate read access and workout write access, requires a participant action, and starts no collection.
+3. Platform neutral authorization intents and state in `CoherenceAcquisition`, with the concrete HealthKit adapter confined to the Apple application boundary.
+4. A minimum first authorization plan. The phone asks to read heart rate history. The Watch asks to read live heart rate and share an explicit workout.
+5. Read authorization projection that remains `notInspectable`, because HealthKit does not disclose individual read choices to applications. Request completion is recorded as a request fact, not an access grant.
+6. Versioned diagnostic JSON that excludes biometric values, participant identity, and persistent device identifiers.
+7. Debug authorization fixtures for request needed, request recorded, workout write denied, unavailable, needs companion, and sanitized request failure states.
+8. Deterministic phone unit and interface coverage plus Watch unit coverage for the prepared states.
+
+This preparation satisfies no physical entry or exit criterion. Root local validation passes with six phone tests and five Watch tests on a temporary paired simulator set. Hosted validation remains a merge gate. HealthKit authorization behavior, signing, background behavior, battery measurements, and every other physical result remain absent.
+
 ### Xcode application work
 
-1. Add a staged HealthKit authorization coordinator.
+1. Validate and extend the staged HealthKit authorization coordinator on physical devices.
 2. Implement anchored historical imports for heart rate and HRV SDNN first.
 3. Capture every available source revision, device, UUID, metadata, and algorithm version field.
 4. Implement an explicit Watch workout lifecycle with prepared, recording, paused, ended, saved, and discarded states.
 5. Collect live heart rate through `HKLiveWorkoutBuilder`.
 6. Capture source, wall, monotonic, and arrival timestamps.
-7. Add local diagnostic logging with sensitive values redacted.
+7. Validate and extend local diagnostic logging with sensitive values redacted.
 8. Mirror the active workout session to the phone.
 9. Send live diagnostic snapshots through the mirrored session.
 10. Buffer sealed sample batches on the Watch.
