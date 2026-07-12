@@ -50,6 +50,19 @@ fi
 rm -rf "$work"
 mkdir -p "$derived" "$results"
 
+phone_type=com.apple.CoreSimulator.SimDeviceType.iPhone-17-Pro
+watch_type=com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Series-11-46mm
+suffix="$$"
+
+printf 'Creating and booting a temporary paired iPhone and Watch simulator set.\n'
+phone_id=$(xcrun simctl create "Coherence Phase 0B iPhone $suffix" "$phone_type" "$ios_runtime")
+watch_id=$(xcrun simctl create "Coherence Phase 0B Watch $suffix" "$watch_type" "$watch_runtime")
+xcrun simctl pair "$watch_id" "$phone_id" >/dev/null
+xcrun simctl boot "$phone_id"
+xcrun simctl boot "$watch_id"
+xcrun simctl bootstatus "$phone_id" -b >/dev/null
+xcrun simctl bootstatus "$watch_id" -b >/dev/null
+
 printf 'Building the iPhone and embedded Watch applications with Xcode %s.\n' "$actual_xcode_version"
 xcodebuild \
     -quiet \
@@ -80,19 +93,6 @@ test -d "$embedded_watch_app"
 test "$(plutil -extract CFBundleIdentifier raw "$phone_app/Info.plist")" = 'org.providencecollective.coherence'
 test "$(plutil -extract CFBundleIdentifier raw "$embedded_watch_app/Info.plist")" = 'org.providencecollective.coherence.watchkitapp'
 test "$(plutil -extract WKCompanionAppBundleIdentifier raw "$embedded_watch_app/Info.plist")" = 'org.providencecollective.coherence'
-
-phone_type=com.apple.CoreSimulator.SimDeviceType.iPhone-17-Pro
-watch_type=com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Series-11-46mm
-suffix="$$"
-
-phone_id=$(xcrun simctl create "Coherence Phase 0B iPhone $suffix" "$phone_type" "$ios_runtime")
-watch_id=$(xcrun simctl create "Coherence Phase 0B Watch $suffix" "$watch_type" "$watch_runtime")
-xcrun simctl pair "$watch_id" "$phone_id" >/dev/null
-printf 'Booting a temporary paired iPhone and Watch simulator set.\n'
-xcrun simctl boot "$phone_id"
-xcrun simctl boot "$watch_id"
-xcrun simctl bootstatus "$phone_id" -b >/dev/null
-xcrun simctl bootstatus "$watch_id" -b >/dev/null
 
 printf 'Running iPhone unit and interface smoke tests.\n'
 xcodebuild \
