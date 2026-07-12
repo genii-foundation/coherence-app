@@ -138,6 +138,7 @@ The shared implementation now:
 3. Treats individual HealthKit read choices as `notInspectable`. Only the workout write status is projected from the HealthKit authorization status API.
 4. Uses `getRequestStatusForAuthorization` only to determine whether the system may need to ask again. It does not interpret that status as a per-type read result.
 5. Records stable request identifiers, results, evidence source, and sanitized error codes without recording biometric values.
+6. Distinguishes Apple's `request unnecessary` status from an application recorded request, and preserves sanitized request status inspection failures.
 
 ### Deterministic fixtures
 
@@ -147,11 +148,11 @@ Fixture runs use fixed run, request, and observation values. This makes phone un
 
 ### Validation
 
-1. Phone tests cover the privacy to permission to overview transition, request recording, noninspectable read state, sanitized failure state, and diagnostic JSON redaction.
+1. Phone tests cover the privacy to permission to overview transition, request recording, noninspectable read state, sanitized failure state, diagnostic JSON redaction, stale refresh rejection, and inspection error preservation.
 2. The phone interface test covers the complete synthetic privacy, request, overview, and diagnostic flow without a system alert.
 3. Watch tests cover request recording, noninspectable live heart rate read state, inspectable workout write state, unavailable, needs companion, write denied, and sanitized failure fixtures.
 4. `scripts/validate-apple.sh` remains the focused local command. `scripts/validate.sh` remains the root repository command.
-5. Current evidence is simulator composition. Root local validation passes with six phone tests and five Watch tests on a temporary paired simulator set. Hosted validation remains a merge gate and does not establish physical device behavior.
+5. Current evidence is simulator composition. Root local validation passes with nine phone tests and five Watch tests on a temporary paired simulator set. Hosted validation remains a merge gate and does not establish physical device behavior.
 
 ### Physical work still required
 

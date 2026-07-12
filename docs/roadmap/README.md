@@ -130,7 +130,7 @@ Useful simulator work may prepare a physical experiment without pretending the e
 7. Debug authorization fixtures for request needed, request recorded, workout write denied, unavailable, needs companion, and sanitized request failure states.
 8. Deterministic phone unit and interface coverage plus Watch unit coverage for the prepared states.
 
-This preparation satisfies no physical entry or exit criterion. Root local validation passes with six phone tests and five Watch tests on a temporary paired simulator set. Hosted validation remains a merge gate. HealthKit authorization behavior, signing, background behavior, battery measurements, and every other physical result remain absent.
+This preparation satisfies no physical entry or exit criterion. Root local validation passes with nine phone tests and five Watch tests on a temporary paired simulator set. Hosted validation remains a merge gate. HealthKit authorization behavior, signing, background behavior, battery measurements, and every other physical result remain absent.
 
 ### Xcode application work
 

@@ -34,6 +34,14 @@ struct WatchRootView: View {
           .foregroundStyle(.secondary)
           .multilineTextAlignment(.center)
 
+        if let inspectionErrorCode = model.authorizationSnapshot.inspectionErrorCode {
+          Text("Inspection unavailable: \(inspectionErrorCode)")
+            .font(.caption2)
+            .foregroundStyle(.orange)
+            .multilineTextAlignment(.center)
+            .accessibilityIdentifier("coherence.watch.authorization.inspection-error")
+        }
+
         if let workoutObservation = model.authorizationSnapshot.observations[.workoutRecording] {
           Text("Workout sharing: \(workoutObservation.displayName)")
             .font(.caption2.weight(.semibold))

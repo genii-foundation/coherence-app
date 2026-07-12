@@ -9,6 +9,7 @@ final class WatchAppModel {
   let sensorAdapter: any SensorAdapter
   let schemaVersion = SampleBatch.currentSchemaVersion
   private let authorizationService: any MeasurementAuthorizationService
+  private var authorizationOperationGeneration = 0
 
   private(set) var authorizationSnapshot: MeasurementAuthorizationSnapshot
   private(set) var latestAuthorizationRequest: MeasurementAuthorizationRequestRecord?
@@ -26,7 +27,17 @@ final class WatchAppModel {
   }
 
   func refreshAuthorization() async {
-    authorizationSnapshot = await authorizationService.currentSnapshot()
+    guard !isRequestingAuthorization else {
+      return
+    }
+
+    authorizationOperationGeneration += 1
+    let generation = authorizationOperationGeneration
+    let snapshot = await authorizationService.currentSnapshot()
+    guard generation == authorizationOperationGeneration else {
+      return
+    }
+    authorizationSnapshot = snapshot
   }
 
   func prepareMeasurement() async {
@@ -34,13 +45,19 @@ final class WatchAppModel {
       return
     }
 
+    authorizationOperationGeneration += 1
+    let generation = authorizationOperationGeneration
     isRequestingAuthorization = true
     authorizationErrorCode = nil
     defer { isRequestingAuthorization = false }
 
     do {
       latestAuthorizationRequest = try await authorizationService.requestAuthorization()
-      authorizationSnapshot = await authorizationService.currentSnapshot()
+      let snapshot = await authorizationService.currentSnapshot()
+      guard generation == authorizationOperationGeneration else {
+        return
+      }
+      authorizationSnapshot = snapshot
     } catch let error as MeasurementAuthorizationServiceError {
       authorizationErrorCode =
         switch error {
@@ -51,10 +68,18 @@ final class WatchAppModel {
         case .requestFailed(let code):
           code
         }
-      authorizationSnapshot = await authorizationService.currentSnapshot()
+      let snapshot = await authorizationService.currentSnapshot()
+      guard generation == authorizationOperationGeneration else {
+        return
+      }
+      authorizationSnapshot = snapshot
     } catch {
       authorizationErrorCode = "authorization.request-failed"
-      authorizationSnapshot = await authorizationService.currentSnapshot()
+      let snapshot = await authorizationService.currentSnapshot()
+      guard generation == authorizationOperationGeneration else {
+        return
+      }
+      authorizationSnapshot = snapshot
     }
   }
 }

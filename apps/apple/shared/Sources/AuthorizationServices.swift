@@ -48,6 +48,14 @@ struct BootstrapAuthorizationServices: Sendable {
   let initialSnapshot: MeasurementAuthorizationSnapshot
 
   init(
+    service: any MeasurementAuthorizationService,
+    initialSnapshot: MeasurementAuthorizationSnapshot
+  ) {
+    self.service = service
+    self.initialSnapshot = initialSnapshot
+  }
+
+  init(
     configuration: AppleRuntimeConfiguration,
     plan: AppleAuthorizationPlan
   ) {
@@ -159,7 +167,7 @@ struct BootstrapAuthorizationServices: Sendable {
         throw MeasurementAuthorizationServiceError.unavailable
       case .needsCompanion:
         throw MeasurementAuthorizationServiceError.needsCompanion
-      case .notRequested, .requestNeeded, .requestRecorded:
+      case .notRequested, .requestNeeded, .requestNotNeeded, .requestRecorded:
         break
       }
 

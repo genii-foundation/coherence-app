@@ -10,6 +10,7 @@ public enum MeasurementAuthorizationIntent: String, CaseIterable, Codable, Hasha
 public enum MeasurementAuthorizationReadiness: String, Codable, Equatable, Sendable {
   case notRequested
   case requestNeeded
+  case requestNotNeeded
   case requestRecorded
   case unavailable
   case needsCompanion
@@ -38,6 +39,7 @@ public struct MeasurementAuthorizationSnapshot: Codable, Equatable, Sendable {
   public let observedAt: Date
   public let evidenceSource: MeasurementAuthorizationEvidenceSource
   public let latestRequestID: UUID?
+  public let inspectionErrorCode: String?
 
   public init(
     intents: Set<MeasurementAuthorizationIntent>,
@@ -46,7 +48,8 @@ public struct MeasurementAuthorizationSnapshot: Codable, Equatable, Sendable {
     healthDataAvailable: Bool,
     observedAt: Date,
     evidenceSource: MeasurementAuthorizationEvidenceSource,
-    latestRequestID: UUID? = nil
+    latestRequestID: UUID? = nil,
+    inspectionErrorCode: String? = nil
   ) {
     self.intents = intents
     self.readiness = readiness
@@ -55,6 +58,7 @@ public struct MeasurementAuthorizationSnapshot: Codable, Equatable, Sendable {
     self.observedAt = observedAt
     self.evidenceSource = evidenceSource
     self.latestRequestID = latestRequestID
+    self.inspectionErrorCode = inspectionErrorCode
   }
 }
 

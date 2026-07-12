@@ -33,11 +33,13 @@ struct AppleDiagnosticSnapshot: Codable, Equatable, Sendable {
   let operatingSystemVersion: String
   let sensorMode: String
   let authorizationReadiness: String
+  let authorizationObservedAt: Date
   let healthDataAvailable: Bool
   let evidenceSource: String
   let requestedAccess: [AppleAuthorizationDiagnostic]
   let latestAuthorizationRequestIdentifier: UUID?
   let latestAuthorizationRequestResult: String?
+  let authorizationInspectionErrorCode: String?
   let authorizationErrorCode: String?
   let biometricValuesIncluded: Bool
   let participantIdentityIncluded: Bool
@@ -65,6 +67,7 @@ struct AppleDiagnosticSnapshot: Codable, Equatable, Sendable {
     self.operatingSystemVersion = operatingSystemVersion
     self.sensorMode = sensorMode.rawValue
     authorizationReadiness = authorizationSnapshot.readiness.rawValue
+    authorizationObservedAt = authorizationSnapshot.observedAt
     healthDataAvailable = authorizationSnapshot.healthDataAvailable
     evidenceSource = authorizationSnapshot.evidenceSource.rawValue
     requestedAccess = authorizationSnapshot.intents
@@ -79,6 +82,7 @@ struct AppleDiagnosticSnapshot: Codable, Equatable, Sendable {
       latestRequest?.id
       ?? authorizationSnapshot.latestRequestID
     latestAuthorizationRequestResult = latestRequest?.result.rawValue
+    authorizationInspectionErrorCode = authorizationSnapshot.inspectionErrorCode
     self.authorizationErrorCode = authorizationErrorCode
     biometricValuesIncluded = false
     participantIdentityIncluded = false
@@ -99,7 +103,6 @@ struct AppleDiagnosticSnapshot: Codable, Equatable, Sendable {
 
 struct AppleDiagnosticContext: Equatable, Sendable {
   let runIdentifier: UUID
-  let generatedAt: Date
   let applicationVersion: String
   let applicationBuild: String
   let role: AppleApplicationRole
@@ -113,7 +116,6 @@ struct AppleDiagnosticContext: Equatable, Sendable {
   ) -> AppleDiagnosticContext {
     AppleDiagnosticContext(
       runIdentifier: configuration.diagnosticRunIdentifier,
-      generatedAt: configuration.observedAt,
       applicationVersion: bundle.object(
         forInfoDictionaryKey: "CFBundleShortVersionString"
       ) as? String ?? "unknown",

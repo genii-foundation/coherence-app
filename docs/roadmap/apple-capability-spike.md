@@ -25,8 +25,9 @@ Build Slice B now provides a simulator safe shell for the first authorization ex
 4. Read authorization is always presented as noninspectable. A completed request says only that the request completed. HealthKit write status can be inspected for the workout type.
 5. Debug fixtures cover `needs-request`, `request-recorded`, `write-denied`, `unavailable`, `needs-companion`, and `request-failure` through `COHERENCE_AUTHORIZATION_FIXTURE=<value>`.
 6. The phone can preview and share a versioned diagnostic JSON snapshot. That snapshot explicitly excludes biometric values, participant identity, and persistent device identifiers.
+7. Apple reporting that a request is unnecessary remains distinct from a locally recorded request. Request status inspection failures retain only a sanitized numeric diagnostic code.
 
-This preparation is not physical experiment evidence. Root local validation passes with six phone tests and five Watch tests on a temporary paired simulator set, and hosted validation remains a merge gate. Real HealthKit sheets, permission choices, query behavior, signing, background execution, sampling, battery, and connectivity remain untested until the required devices and authenticated Xcode setup are available.
+This preparation is not physical experiment evidence. Root local validation passes with nine phone tests and five Watch tests on a temporary paired simulator set, and hosted validation remains a merge gate. Real HealthKit sheets, permission choices, query behavior, signing, background execution, sampling, battery, and connectivity remain untested until the required devices and authenticated Xcode setup are available.
 
 ## Capability questions
 

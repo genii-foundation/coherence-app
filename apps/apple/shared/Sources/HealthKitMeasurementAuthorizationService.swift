@@ -57,7 +57,7 @@ actor HealthKitMeasurementAuthorizationService: MeasurementAuthorizationService 
         case .shouldRequest:
           .requestNeeded
         case .unnecessary:
-          .requestRecorded
+          latestRequestID == nil ? .requestNotNeeded : .requestRecorded
         case .unknown:
           .notRequested
         @unknown default:
@@ -74,6 +74,7 @@ actor HealthKitMeasurementAuthorizationService: MeasurementAuthorizationService 
         latestRequestID: latestRequestID
       )
     } catch {
+      let errorCode = Self.inspectionErrorCode(for: error)
       return MeasurementAuthorizationSnapshot(
         intents: plan.intents,
         readiness: .notRequested,
@@ -81,7 +82,8 @@ actor HealthKitMeasurementAuthorizationService: MeasurementAuthorizationService 
         healthDataAvailable: true,
         observedAt: observedAt,
         evidenceSource: Self.evidenceSource,
-        latestRequestID: latestRequestID
+        latestRequestID: latestRequestID,
+        inspectionErrorCode: errorCode
       )
     }
   }
@@ -110,6 +112,31 @@ actor HealthKitMeasurementAuthorizationService: MeasurementAuthorizationService 
     #else
       .physicalDevice
     #endif
+  }
+
+  static func inspectionErrorCode(for error: Error) -> String {
+    if let serviceError = error as? MeasurementAuthorizationServiceError {
+      return switch serviceError {
+      case .unavailable:
+        "authorization.unavailable"
+      case .needsCompanion:
+        "authorization.needs-companion"
+      case .requestFailed(let code):
+        code
+      }
+    }
+
+    let platformError = error as NSError
+    let domainCategory =
+      switch platformError.domain {
+      case HKErrorDomain:
+        "healthkit"
+      case NSCocoaErrorDomain:
+        "cocoa"
+      default:
+        "platform"
+      }
+    return "healthkit.authorization-status.\(domainCategory).\(platformError.code)"
   }
 
   private static func initialObservations(

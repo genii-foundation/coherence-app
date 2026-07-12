@@ -7,6 +7,8 @@ extension MeasurementAuthorizationReadiness {
       "Not checked yet"
     case .requestNeeded:
       "Access request needed"
+    case .requestNotNeeded:
+      "No new access request needed"
     case .requestRecorded:
       "Access request recorded"
     case .unavailable:
@@ -22,6 +24,8 @@ extension MeasurementAuthorizationReadiness {
       "Coherence has not inspected whether an access request is needed."
     case .requestNeeded:
       "You can choose whether to continue to Apple's health access sheet."
+    case .requestNotNeeded:
+      "Apple reports that this request set does not need to be presented again. This does not reveal individual health read choices."
     case .requestRecorded:
       "The request completed. Apple keeps individual health read choices private from apps."
     case .unavailable:

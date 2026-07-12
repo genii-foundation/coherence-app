@@ -64,6 +64,8 @@ Platform neutral authorization intents, readiness, observations, request records
 
 [Apple's HealthKit authorization guidance](https://developer.apple.com/documentation/healthkit/authorizing-access-to-health-data) states that an application cannot determine whether a participant granted read access to an individual type. Read intents are therefore projected as `notInspectable`. The app may inspect its write authorization status for the workout type, but must not use request completion or the absence of an error as evidence of read permission.
 
+Apple reporting that a request is unnecessary is projected separately as `requestNotNeeded`. Only a successful request initiated by this running application produces `requestRecorded` and a local request identifier. A failed request status inspection retains a sanitized numeric diagnostic code instead of silently masquerading as a first run.
+
 ## Synthetic sensor and authorization fixtures
 
 Both shared schemes pass this Debug launch argument:
@@ -93,7 +95,7 @@ Fake sensor mode defaults to the `needs-request` authorization fixture when no f
 
 ## Privacy safe diagnostics
 
-The phone diagnostic JSON contains application version and build, platform and device class, operating system version, the per-run identifier, sensor mode, authorization readiness, HealthKit availability, evidence source, requested acquisition intents, projected authorization observations, the latest request identifier and result when available, and a sanitized authorization error code.
+The phone diagnostic JSON contains application version and build, platform and device class, operating system version, the per-run identifier, export generation time, authorization observation time, sensor mode, authorization readiness, HealthKit availability, evidence source, requested acquisition intents, projected authorization observations, the latest request identifier and result when available, a sanitized request error code, and a sanitized authorization inspection error code.
 
 The schema explicitly records that biometric values, participant identity, and persistent device identifiers are excluded. Tests also reject accidental sample and source timestamp fields in this export. The run identifier is fixed only for deterministic fixtures and is newly generated for a normal application launch. This initial redaction shape is not permission to add general telemetry. Export protection, retention, and diagnostic policy remain open architecture questions.
 
@@ -107,6 +109,6 @@ Keep HealthKit, WatchConnectivity, workout mirroring, and Apple framework types 
 
 Build Slice B adds a concrete HealthKit authorization adapter and the staged interface around it. It does not add a HealthKit sample query, workout session, live collection, WatchConnectivity transfer, database, account, or backend. Those capabilities still require Phase 1 physical device evidence. Select the Providence Apple developer team and keep its identifier in ignored local configuration only when physical signing begins.
 
-Phase 1 remains Waiting. Current evidence is simulator safe composition. Root local validation passes with six phone tests and five Watch tests on a temporary paired simulator set. Hosted validation remains a merge gate and cannot substitute for physical authorization, collection, background, battery, or signing evidence.
+Phase 1 remains Waiting. Current evidence is simulator safe composition. Root local validation passes with nine phone tests and five Watch tests on a temporary paired simulator set. Hosted validation remains a merge gate and cannot substitute for physical authorization, collection, background, battery, or signing evidence.
 
 The Watch target is provisionally configured as a companion that is not installed independently. This does not prevent an installed Watch application from buffering a measurement while its phone is temporarily unreachable. Independent installation and runtime disconnection are separate questions, and the final setting belongs to the Phase 1 capability evidence.

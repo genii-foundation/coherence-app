@@ -1,5 +1,6 @@
 import CoherenceAcquisition
 import CoherenceCore
+import Foundation
 import Observation
 
 enum PhoneDestination: Equatable, Sendable {
@@ -17,6 +18,8 @@ final class PhoneAppModel {
   let schemaVersion = SampleBatch.currentSchemaVersion
   private let authorizationService: any MeasurementAuthorizationService
   private let diagnosticContext: AppleDiagnosticContext
+  private var authorizationOperationGeneration = 0
+  @ObservationIgnored private var diagnosticSnapshotCache: AppleDiagnosticSnapshot?
 
   private(set) var destination: PhoneDestination = .privacy
   private(set) var authorizationSnapshot: MeasurementAuthorizationSnapshot
@@ -37,7 +40,18 @@ final class PhoneAppModel {
   }
 
   func refreshAuthorization() async {
-    authorizationSnapshot = await authorizationService.currentSnapshot()
+    guard !isRequestingAuthorization else {
+      return
+    }
+
+    authorizationOperationGeneration += 1
+    let generation = authorizationOperationGeneration
+    let snapshot = await authorizationService.currentSnapshot()
+    guard generation == authorizationOperationGeneration else {
+      return
+    }
+    authorizationSnapshot = snapshot
+    diagnosticSnapshotCache = nil
   }
 
   func continueFromPrivacy() {
@@ -57,6 +71,7 @@ final class PhoneAppModel {
   }
 
   func showDiagnostics() {
+    diagnosticSnapshotCache = nil
     destination = .diagnostics
   }
 
@@ -65,13 +80,20 @@ final class PhoneAppModel {
       return
     }
 
+    authorizationOperationGeneration += 1
+    let generation = authorizationOperationGeneration
     isRequestingAuthorization = true
     authorizationErrorCode = nil
     defer { isRequestingAuthorization = false }
 
     do {
       latestAuthorizationRequest = try await authorizationService.requestAuthorization()
-      authorizationSnapshot = await authorizationService.currentSnapshot()
+      let snapshot = await authorizationService.currentSnapshot()
+      guard generation == authorizationOperationGeneration else {
+        return
+      }
+      authorizationSnapshot = snapshot
+      diagnosticSnapshotCache = nil
       destination = .overview
     } catch let error as MeasurementAuthorizationServiceError {
       authorizationErrorCode =
@@ -83,17 +105,31 @@ final class PhoneAppModel {
         case .requestFailed(let code):
           code
         }
-      authorizationSnapshot = await authorizationService.currentSnapshot()
+      let snapshot = await authorizationService.currentSnapshot()
+      guard generation == authorizationOperationGeneration else {
+        return
+      }
+      authorizationSnapshot = snapshot
+      diagnosticSnapshotCache = nil
     } catch {
       authorizationErrorCode = "authorization.request-failed"
-      authorizationSnapshot = await authorizationService.currentSnapshot()
+      let snapshot = await authorizationService.currentSnapshot()
+      guard generation == authorizationOperationGeneration else {
+        return
+      }
+      authorizationSnapshot = snapshot
+      diagnosticSnapshotCache = nil
     }
   }
 
   var diagnosticSnapshot: AppleDiagnosticSnapshot {
-    AppleDiagnosticSnapshot(
+    if let diagnosticSnapshotCache {
+      return diagnosticSnapshotCache
+    }
+
+    let snapshot = AppleDiagnosticSnapshot(
       runIdentifier: diagnosticContext.runIdentifier,
-      generatedAt: diagnosticContext.generatedAt,
+      generatedAt: Date(),
       applicationVersion: diagnosticContext.applicationVersion,
       applicationBuild: diagnosticContext.applicationBuild,
       role: diagnosticContext.role,
@@ -103,6 +139,8 @@ final class PhoneAppModel {
       latestRequest: latestAuthorizationRequest,
       authorizationErrorCode: authorizationErrorCode
     )
+    diagnosticSnapshotCache = snapshot
+    return snapshot
   }
 
   var diagnosticJSON: String {

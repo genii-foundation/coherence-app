@@ -48,6 +48,15 @@ struct PhonePermissionsView: View {
             .foregroundStyle(.secondary)
         }
 
+        if let inspectionErrorCode = snapshot.inspectionErrorCode {
+          Text(
+            "Coherence could not inspect whether Apple needs a new request. Diagnostic code: \(inspectionErrorCode)"
+          )
+          .font(.footnote)
+          .foregroundStyle(.orange)
+          .accessibilityIdentifier("coherence.phone.permissions.inspection-error")
+        }
+
         if let errorCode {
           Text("The access request could not complete. Diagnostic code: \(errorCode)")
             .font(.footnote)
