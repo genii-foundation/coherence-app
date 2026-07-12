@@ -21,10 +21,7 @@ DEVELOPER_DIR=/Library/Developer/CommandLineTools swift run --build-system nativ
 cd "$root"
 
 if find apps -name '*.xcodeproj' -print -quit | grep -q .; then
-    if ! xcodebuild -version >/dev/null 2>&1; then
-        printf 'The Xcode project exists, but Xcode activation is incomplete.\n' >&2
-        exit 1
-    fi
+    "$root/scripts/validate-apple.sh"
 else
     printf 'Shared package validated. Apple target validation begins after native project bootstrap.\n'
 fi

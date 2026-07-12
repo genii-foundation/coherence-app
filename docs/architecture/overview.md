@@ -398,7 +398,7 @@ The repository now has platform specific app roots, language specific package ro
 
 ### Native Apple project bootstrap
 
-Accept the installed Xcode license and complete first launch setup. Create the iPhone application with a companion Watch target using Xcode's native template. Attach the checked in source roots and local Swift package. Commit the project and add simulator build validation.
+Complete. The versioned XcodeGen specification defines the iPhone application, embedded Watch companion, three test targets, two shared schemes, and local Swift package dependencies. The committed project is reproducible with XcodeGen 2.45.4, and root validation builds and tests the paired simulator shells with signing disabled.
 
 ### Phase 1 Apple capability spike
 
@@ -422,6 +422,6 @@ Validate group metrics before proximity, voice, EDA, EEG, or composite models. A
 
 ## Current tooling constraint
 
-This Mac now has Xcode 26.6, iOS and watchOS platform SDKs, and Swift 6.4 command line tools. Apple's Xcode license and first launch components still require administrator approval before command line or simulator builds can run.
+This Mac has Xcode 26.6 command line builds, iOS and watchOS platform SDKs and simulator runtimes, and Swift 6.4 command line tools. Those tools are sufficient for reproducible Phase 0B validation.
 
-The shared package remains testable through the command line toolchain. The repository checks in Apple application sources and exact target requirements, but does not contain a guessed project file. That is a deliberate correctness boundary, not an architectural omission.
+The current macOS 27 beta host does not support the Xcode 26.6 graphical application. Xcode 27 beta is the appropriate graphical toolchain for this host, but its authenticated Apple download is still pending. Continuous integration pins Xcode 26.6 to a supported macOS 26 runner so local host beta status does not become repository folklore disguised as architecture.

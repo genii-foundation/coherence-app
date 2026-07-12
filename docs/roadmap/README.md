@@ -18,9 +18,9 @@ At most one phase should be In progress. On phase completion, update this file, 
 
 Phase 0A is Complete.
 
-Phase 0B is Waiting for Xcode license acceptance and first launch setup. It is the next implementation phase.
+Phase 0B is Complete. The native target graph, deterministic simulator composition, paired simulator validation, and pinned continuous integration are in the repository.
 
-Phase 1 becomes Ready only after Phase 0B passes its exit criteria.
+Phase 1 is Waiting for a selected Apple developer team, local physical signing, and a paired physical iPhone and Apple Watch. It becomes Ready only when every entry criterion below is satisfied.
 
 ## Phase 0A: Repository and architecture foundation
 
@@ -49,7 +49,7 @@ Create a cross platform monorepo foundation that can host the first native Apple
 
 ## Phase 0B: Native Xcode application bootstrap
 
-Status: Waiting for Xcode activation
+Status: Complete
 
 ### Objective
 
@@ -57,28 +57,26 @@ Create a trustworthy native target graph for the iPhone application and its comp
 
 ### Entry criteria
 
-1. Xcode 26.6 is installed and selected.
-2. Apple's Xcode license is accepted and first launch setup is complete.
+1. A supported command line Xcode toolchain is installed and selected.
+2. Xcode license and first launch setup are complete for command line builds.
 3. iOS and watchOS platform SDKs and simulators are available.
-4. An Apple developer team is known for local signing.
-5. Phase 0A validation is green.
+4. Phase 0A validation is green.
 
 ### Implementation scope
 
-1. Use Xcode's companion Watch application template inside `apps/apple`.
+1. Define the native companion target graph in `apps/apple/project.yml` and generate it with XcodeGen 2.45.4.
 2. Create `CoherenceApp`, `CoherenceWatchApp`, `CoherenceAppTests`, `CoherenceAppUITests`, and `CoherenceWatchAppTests` targets.
 3. Use iOS 18 and watchOS 11 as provisional deployment floors.
 4. Attach the existing application sources, resources, property lists, and entitlements.
 5. Add the local `CoherenceKit` package.
 6. Link every shared module to the phone target and only required modules to the Watch target.
 7. Apply checked in base, debug, and release settings.
-8. Keep the Apple team identifier in ignored local configuration.
-9. Create shared `Coherence` and `CoherenceWatch` schemes.
-10. Add a launch argument that selects fake sensor adapters for simulator tests.
-11. Add one phone interface smoke test and one Watch composition test.
-12. Extend `scripts/validate.sh` to build both application targets with signing disabled and run simulator tests.
-13. Pin the continuous integration runner and Xcode version.
-14. Commit Xcode's project and package resolution state.
+8. Create shared `Coherence` and `CoherenceWatch` schemes.
+9. Add a launch argument that selects fake sensor adapters for simulator tests.
+10. Add phone composition and interface smoke tests plus a Watch composition test.
+11. Extend `scripts/validate.sh` to build both application targets with signing disabled and run simulator tests.
+12. Pin the continuous integration runner, Xcode, and XcodeGen versions.
+13. Commit the generated Xcode project and its specification.
 
 ### Exit criteria
 
@@ -91,13 +89,21 @@ Create a trustworthy native target graph for the iPhone application and its comp
 7. The root validation command exercises package, phone, and Watch code.
 8. A new developer can open the project and reach the same result from checked in instructions.
 
+### Exit evidence
+
+1. `apps/apple/project.yml` defines all five targets, both shared schemes, package links, bundle identifiers, and the embedded Watch dependency.
+2. `scripts/generate-apple-project.sh` pins XcodeGen 2.45.4 and reproduces `apps/apple/Coherence.xcodeproj`.
+3. `scripts/validate-apple.sh` builds both schemes with signing disabled, verifies Watch embedding and identifiers, boots a temporary paired simulator set, and runs native unit and interface smoke tests.
+4. `scripts/validate.sh` runs shared contract verification before native application validation.
+5. Continuous integration pins Xcode 26.6 on macOS 26 and rejects generated project drift.
+
 ### Explicit exclusions
 
 No real HealthKit query, workout session, WatchConnectivity transfer, database, account, or backend belongs in this phase.
 
 ## Phase 1: Apple capability spike
 
-Status: Waiting for Phase 0B
+Status: Waiting for physical device signing and setup
 
 ### Objective
 
@@ -107,8 +113,9 @@ Measure what current Apple hardware and public APIs actually support before desi
 
 1. Phase 0B is Complete.
 2. At least one physical iPhone and paired Apple Watch are available.
-3. A synthetic participant and redacted export location are defined.
-4. The [capability spike protocol](apple-capability-spike.md) is reviewed.
+3. The Providence Apple developer team is selected and local signing succeeds for both applications.
+4. A synthetic participant and redacted export location are defined.
+5. The [capability spike protocol](apple-capability-spike.md) is reviewed.
 
 ### Xcode application work
 

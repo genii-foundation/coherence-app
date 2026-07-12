@@ -1,18 +1,19 @@
 # Apple capability spike
 
-Status: Ready after Xcode activation and native project bootstrap
+Status: Waiting for physical device signing and setup
 
 This is the first implementation milestone. Its purpose is to replace platform assumptions with measurements from physical iPhones and Apple Watches.
 
 ## Required setup
 
-1. Accept Apple's license for the installed Xcode 26.6 application.
-2. Complete Xcode first launch setup and verify the installed iOS and watchOS platforms.
-3. Create the native iPhone application with a companion Watch application in `apps/apple`.
-4. Attach the checked in source directories, property lists, entitlements, build settings, and local `packages/swift/CoherenceKit` package.
-5. Choose the Providence Apple developer team and place its identifier in ignored local configuration.
-6. Add iOS, watchOS, and package build checks to `scripts/validate.sh` and continuous integration.
-7. Use physical devices for every background, HealthKit, battery, and WatchConnectivity conclusion.
+1. Install a graphical Xcode version supported by the host operating system. The current macOS 27 beta host requires Xcode 27 beta for graphical development, and that authenticated Apple download is still pending.
+2. Choose the Providence Apple developer team and place its identifier in ignored local configuration.
+3. Sign, install, and launch both applications on a paired physical iPhone and Apple Watch.
+4. Define a synthetic participant and an approved redacted export location.
+5. Review this protocol and name the initial hardware matrix.
+6. Use physical devices for every background, HealthKit, battery, and WatchConnectivity conclusion.
+
+The native project, package links, simulator runtimes, fake composition, native tests, root validation, and continuous integration were completed in Phase 0B. They are prerequisites, not deliverables to rediscover during this spike.
 
 ## Capability questions
 
@@ -128,10 +129,9 @@ This spike does not include account creation, backend upload, facilitator views,
 
 ## Deliverables
 
-1. A committed native Xcode project and target tests.
-2. A physical device capability matrix.
-3. Reproducible run exports with redacted synthetic identity.
-4. A battery and sampling report.
-5. A Watch and phone failure recovery report.
-6. Updated architecture decisions based on observed behavior.
-7. A go, revise, or stop decision for the Phase 1 individual data spine.
+1. A physical device capability matrix.
+2. Reproducible run exports with redacted synthetic identity.
+3. A battery and sampling report.
+4. A Watch and phone failure recovery report.
+5. Updated architecture decisions based on observed behavior.
+6. A go, revise, or stop decision for the Phase 2 individual data spine.

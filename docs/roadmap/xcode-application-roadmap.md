@@ -4,7 +4,7 @@ This document controls the first Apple implementation of Coherence. The [unified
 
 ## Native target graph
 
-Create one committed Xcode project at `apps/apple/Coherence.xcodeproj`.
+The committed project at `apps/apple/Coherence.xcodeproj` is generated from `apps/apple/project.yml` with XcodeGen 2.45.4. The specification is the source of truth. Regenerate with `scripts/generate-apple-project.sh`, then review the project diff before committing it.
 
 The initial targets are:
 
@@ -84,10 +84,12 @@ Add a launch argument such as `COHERENCE_USE_FAKE_SENSORS=1` to select in memory
 
 Roadmap phase: 0B
 
+Status: Complete
+
 ### Work
 
-1. Accept the Xcode license and complete first launch setup.
-2. Create a watchOS application with a companion iOS application.
+1. Activate a command line Xcode installation with iOS and watchOS simulator runtimes.
+2. Define a watchOS application with a companion iOS application in the versioned XcodeGen specification.
 3. Use organization identifier `org.providencecollective` provisionally.
 4. Set application product name to `Coherence`.
 5. Attach the checked in source, resource, property list, entitlement, and build configuration files.
@@ -101,9 +103,11 @@ Roadmap phase: 0B
 
 1. Both targets build from a clean checkout with signing disabled.
 2. Both targets launch in paired simulators.
-3. Both targets build and install on paired physical devices after local signing.
+3. The phone interface smoke test and phone and Watch composition tests pass in temporary simulators.
 4. Embedded Watch bundle and companion identifiers are correct.
-5. Generated signing entitlements contain only approved capabilities.
+5. Fake sensor mode runs without HealthKit authorization and labels its data as synthetic.
+
+Physical installation, generated signing entitlement inspection, and platform capability evidence belong to Phase 1.
 
 ## Build Slice B: Permission and diagnostic shell
 
@@ -366,7 +370,7 @@ Use physical devices for HealthKit authorization, workout sensors, mirrored sess
 
 Keep `config/apple/xcode/Base.xcconfig`, `Debug.xcconfig`, `Release.xcconfig`, and optional ignored `Local.xcconfig` as the shared settings source.
 
-Continuous integration should eventually:
+Continuous integration now:
 
 1. Pin macOS and Xcode versions.
 2. Build every package product.
@@ -377,19 +381,14 @@ Continuous integration should eventually:
 7. Check package resolution and project changes.
 8. Upload useful failure artifacts that contain no physiology.
 
-## Tomorrow's exact starting point
+## Next implementation starting point
 
-After administrator approval is available:
+Phase 0B is complete. The next implementation work is Phase 1, but it remains waiting until physical device entry criteria are satisfied:
 
-1. Accept the installed Xcode license.
-2. Complete first launch setup.
-3. Verify iPhone and Watch simulator runtimes.
-4. Create the native companion project in `apps/apple`.
-5. Attach the existing sources and `packages/swift/CoherenceKit` package.
-6. Wire capabilities and build settings.
-7. Create shared schemes.
-8. Build and launch both shells in paired simulators.
-9. Build and launch them on paired physical devices.
-10. Extend root validation and continuous integration.
-11. Commit only the bootstrap.
-12. Mark Phase 0B Complete and Phase 1 Ready in the unified roadmap.
+1. Install a supported graphical Xcode for the host operating system. On the current macOS 27 beta host, that means Xcode 27 beta, which still requires an authenticated Apple download.
+2. Select the Providence Apple developer team and place its identifier only in ignored local configuration.
+3. Prove both applications install and launch on a paired physical iPhone and Apple Watch.
+4. Define a synthetic participant and a redacted export location.
+5. Review the capability spike protocol and minimum device matrix.
+6. Begin Build Slice B with the staged permission and diagnostic shell.
+7. Record physical evidence before promoting any platform assumption into a production contract.
