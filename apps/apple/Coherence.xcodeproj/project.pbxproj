@@ -26,6 +26,7 @@
 		7320D6BCC6AFF44708658BE8 /* AuthorizationPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DF09B0E0F1B7A0BB1CBC49B /* AuthorizationPresentation.swift */; };
 		74505341961BB26AA3311ED2 /* HealthKitMeasurementAuthorizationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D80A52C7F5F97D99BC190EB /* HealthKitMeasurementAuthorizationService.swift */; };
 		80ED975E32DE270E6B76C8DA /* PhonePrivacyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F6D5F66F86F9FAAC1B3F475 /* PhonePrivacyView.swift */; };
+		84BA2A18311840B356E7AC93 /* FixtureMeasurementSessionLifecycleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29FC49C17D8125CB6395CAE /* FixtureMeasurementSessionLifecycleService.swift */; };
 		85CCCD8031B68B1199939187 /* AuthorizationServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = D508757CB2061B46571DC9C7 /* AuthorizationServices.swift */; };
 		8CFFE0AED25A5B3B47BFC154 /* CoherenceAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8BEC1A31DC67305423E7A3 /* CoherenceAppUITests.swift */; };
 		9D16B4D34F7C31ED3D888F7A /* CoherenceFeatures in Frameworks */ = {isa = PBXBuildFile; productRef = 4A957DA0DE1541FEBE35D98D /* CoherenceFeatures */; };
@@ -37,6 +38,7 @@
 		B69DFB9197250E696A884E87 /* CoherenceWatchApp.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = B6EE446C88DFAFA8A53D000E /* CoherenceWatchApp.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		B7C2E98CA2C6037E4AF71267 /* PhoneOverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47E3C30B2BFFA2C7AF5706C /* PhoneOverviewView.swift */; };
 		C542084B6A71260CBFD4C6EC /* WatchAppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0F893D792732C8902DAAC5F /* WatchAppModel.swift */; };
+		C57108994A4C5D6ADE2A6E84 /* FixtureMeasurementSessionLifecycleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29FC49C17D8125CB6395CAE /* FixtureMeasurementSessionLifecycleService.swift */; };
 		C8A0C4F7537A5059A89E290E /* BootstrapSensorAdapters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A79D57FF53818EAF7EE16FA /* BootstrapSensorAdapters.swift */; };
 		CE4735803FA806693A79A094 /* AppleDiagnosticSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0F53EF97C26AC8A87DEB9F /* AppleDiagnosticSnapshot.swift */; };
 		DB6F162BACC7133958603B55 /* CoherenceApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3EB378294E545ABD15DDB6 /* CoherenceApp.swift */; };
@@ -44,6 +46,7 @@
 		E96E3B1411F2E1F035AAA842 /* PhoneDiagnosticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5694D7CA4358E13D5D67969E /* PhoneDiagnosticsView.swift */; };
 		EE87130F24BECD05278B85B7 /* AppleRuntimeConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E95A58C8FB2A2C0A75BD0A /* AppleRuntimeConfiguration.swift */; };
 		F03D0F73726007B90FBD3409 /* CoherenceAcquisition in Frameworks */ = {isa = PBXBuildFile; productRef = 7F46E13ED5B1A680D7721515 /* CoherenceAcquisition */; };
+		F6FACECD2DAB84DB5D536E0E /* WatchSessionLifecycleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EC6CC5D30444859474D9BB5 /* WatchSessionLifecycleView.swift */; };
 		FC2607F99FC2BFC7AEFB0B78 /* CoherenceCore in Frameworks */ = {isa = PBXBuildFile; productRef = 19FB7D62B6F6B602EE17B3E2 /* CoherenceCore */; };
 		FE431DA9C24AE2C8F01D64D0 /* CoherenceAcquisition in Frameworks */ = {isa = PBXBuildFile; productRef = 4A81E9C12F153CB749BD007C /* CoherenceAcquisition */; };
 		FE9774A751F7FC7B475588DE /* CoherenceAcquisition in Frameworks */ = {isa = PBXBuildFile; productRef = 0D7F607BB4192888FBAF6FFD /* CoherenceAcquisition */; };
@@ -114,6 +117,7 @@
 		84B6B71D3C69C22E90D5933E /* CoherenceAppUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = CoherenceAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D80A52C7F5F97D99BC190EB /* HealthKitMeasurementAuthorizationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitMeasurementAuthorizationService.swift; sourceTree = "<group>"; };
 		92ADBC8D8F70308B7CBF44C0 /* WatchCompositionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchCompositionTests.swift; sourceTree = "<group>"; };
+		9EC6CC5D30444859474D9BB5 /* WatchSessionLifecycleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSessionLifecycleView.swift; sourceTree = "<group>"; };
 		A33B9349CB05A0933A46D43B /* PhoneAppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneAppModel.swift; sourceTree = "<group>"; };
 		AA8BEC1A31DC67305423E7A3 /* CoherenceAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoherenceAppUITests.swift; sourceTree = "<group>"; };
 		B5E95A58C8FB2A2C0A75BD0A /* AppleRuntimeConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleRuntimeConfiguration.swift; sourceTree = "<group>"; };
@@ -127,6 +131,7 @@
 		D508757CB2061B46571DC9C7 /* AuthorizationServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationServices.swift; sourceTree = "<group>"; };
 		E1BAE5477DD544B1570747AD /* CoherenceWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoherenceWatchApp.swift; sourceTree = "<group>"; };
 		E23EEF1A968B5C63FEB66E7F /* WatchRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchRootView.swift; sourceTree = "<group>"; };
+		E29FC49C17D8125CB6395CAE /* FixtureMeasurementSessionLifecycleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixtureMeasurementSessionLifecycleService.swift; sourceTree = "<group>"; };
 		ECD33165B4971C0E68FC7626 /* Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Base.xcconfig; sourceTree = "<group>"; };
 		EDF523B23DBF61BDC3A82141 /* project.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = project.yml; sourceTree = "<group>"; };
 		EE35916B6483C699F380EA7F /* Local.example.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Local.example.xcconfig; sourceTree = "<group>"; };
@@ -193,6 +198,7 @@
 				D0F893D792732C8902DAAC5F /* WatchAppModel.swift */,
 				C98D26AFB82A838D4EAD03C5 /* WatchCompositionRoot.swift */,
 				E23EEF1A968B5C63FEB66E7F /* WatchRootView.swift */,
+				9EC6CC5D30444859474D9BB5 /* WatchSessionLifecycleView.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -268,6 +274,7 @@
 				7DF09B0E0F1B7A0BB1CBC49B /* AuthorizationPresentation.swift */,
 				D508757CB2061B46571DC9C7 /* AuthorizationServices.swift */,
 				0A79D57FF53818EAF7EE16FA /* BootstrapSensorAdapters.swift */,
+				E29FC49C17D8125CB6395CAE /* FixtureMeasurementSessionLifecycleService.swift */,
 				8D80A52C7F5F97D99BC190EB /* HealthKitMeasurementAuthorizationService.swift */,
 			);
 			path = Sources;
@@ -551,10 +558,12 @@
 				6E9A69B44C597EF81F560849 /* AuthorizationServices.swift in Sources */,
 				C8A0C4F7537A5059A89E290E /* BootstrapSensorAdapters.swift in Sources */,
 				0F917684FE0BFEFE4B089BDE /* CoherenceWatchApp.swift in Sources */,
+				84BA2A18311840B356E7AC93 /* FixtureMeasurementSessionLifecycleService.swift in Sources */,
 				74505341961BB26AA3311ED2 /* HealthKitMeasurementAuthorizationService.swift in Sources */,
 				C542084B6A71260CBFD4C6EC /* WatchAppModel.swift in Sources */,
 				44C72C352556BAF584FEB200 /* WatchCompositionRoot.swift in Sources */,
 				6FB82808C9AF85F0B95D8769 /* WatchRootView.swift in Sources */,
+				F6FACECD2DAB84DB5D536E0E /* WatchSessionLifecycleView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -584,6 +593,7 @@
 				85CCCD8031B68B1199939187 /* AuthorizationServices.swift in Sources */,
 				68557C84491B188B313B56A1 /* BootstrapSensorAdapters.swift in Sources */,
 				DB6F162BACC7133958603B55 /* CoherenceApp.swift in Sources */,
+				C57108994A4C5D6ADE2A6E84 /* FixtureMeasurementSessionLifecycleService.swift in Sources */,
 				B3467BCEC792B650E4D47A86 /* HealthKitMeasurementAuthorizationService.swift in Sources */,
 				6F5F0F7140A8766595596250 /* PhoneAppModel.swift in Sources */,
 				ADF0CD022CE2A67F614F3825 /* PhoneCompositionRoot.swift in Sources */,

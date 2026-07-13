@@ -88,6 +88,10 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
+            argument = "COHERENCE_SESSION_FIXTURE=interactive"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
             argument = "COHERENCE_USE_FAKE_SENSORS=1"
             isEnabled = "YES">
          </CommandLineArgument>

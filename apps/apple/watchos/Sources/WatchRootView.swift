@@ -10,6 +10,34 @@ struct WatchRootView: View {
           .font(.title2)
           .foregroundStyle(.green)
 
+        if model.sessionFixtureAvailable {
+          WatchSessionLifecycleView(
+            projection: model.sessionProjection,
+            errorCode: model.sessionErrorCode,
+            isTransitioning: model.isTransitioningSession,
+            onStart: {
+              Task { await model.startSyntheticRehearsal() }
+            },
+            onPause: {
+              Task { await model.pauseSyntheticRehearsal() }
+            },
+            onResume: {
+              Task { await model.resumeSyntheticRehearsal() }
+            },
+            onEnd: {
+              Task { await model.endSyntheticRehearsal() }
+            },
+            onSave: {
+              Task { await model.saveSyntheticRehearsal() }
+            },
+            onDiscard: {
+              Task { await model.discardSyntheticRehearsal() }
+            }
+          )
+
+          Divider()
+        }
+
         Text("Explicit measurement")
           .font(.headline)
           .multilineTextAlignment(.center)
@@ -51,7 +79,7 @@ struct WatchRootView: View {
 
         if model.authorizationSnapshot.readiness.canRequestAccess {
           Button {
-            Task { await model.prepareMeasurement() }
+            Task { await model.requestMeasurementAccess() }
           } label: {
             if model.isRequestingAuthorization {
               ProgressView()
@@ -94,7 +122,10 @@ struct WatchRootView: View {
 #Preview {
   WatchRootView(
     model: WatchCompositionRoot.make(
-      arguments: [AppleRuntimeConfiguration.fakeSensorArgument]
+      arguments: [
+        AppleRuntimeConfiguration.fakeSensorArgument,
+        "COHERENCE_SESSION_FIXTURE=interactive",
+      ]
     ).model
   )
 }

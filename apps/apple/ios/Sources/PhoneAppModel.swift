@@ -15,6 +15,7 @@ enum PhoneDestination: Equatable, Sendable {
 final class PhoneAppModel {
   let sensorMode: AppleSensorMode
   let sensorAdapter: any SensorAdapter
+  let sessionFixtureAvailable: Bool
   let schemaVersion = SampleBatch.currentSchemaVersion
   private let authorizationService: any MeasurementAuthorizationService
   private let diagnosticContext: AppleDiagnosticContext
@@ -30,10 +31,12 @@ final class PhoneAppModel {
   init(
     sensorServices: BootstrapSensorServices,
     authorizationServices: BootstrapAuthorizationServices,
-    diagnosticContext: AppleDiagnosticContext
+    diagnosticContext: AppleDiagnosticContext,
+    sessionFixtureAvailable: Bool
   ) {
     sensorMode = sensorServices.mode
     sensorAdapter = sensorServices.adapter
+    self.sessionFixtureAvailable = sessionFixtureAvailable
     authorizationService = authorizationServices.service
     authorizationSnapshot = authorizationServices.initialSnapshot
     self.diagnosticContext = diagnosticContext

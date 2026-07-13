@@ -148,6 +148,7 @@ schemes:
       config: Debug
       commandLineArguments:
         COHERENCE_USE_FAKE_SENSORS=1: true
+        COHERENCE_SESSION_FIXTURE=interactive: true
     test:
       config: Debug
       gatherCoverageData: true
@@ -166,6 +167,7 @@ schemes:
       config: Debug
       commandLineArguments:
         COHERENCE_USE_FAKE_SENSORS=1: true
+        COHERENCE_SESSION_FIXTURE=interactive: true
     test:
       config: Debug
       gatherCoverageData: true

@@ -20,7 +20,7 @@ Phase 0A is Complete.
 
 Phase 0B is Complete. The native target graph, deterministic simulator composition, paired simulator validation, and pinned continuous integration are in the repository.
 
-Phase 1 is Waiting for a selected Apple developer team, local physical signing, and a paired physical iPhone and Apple Watch. Simulator safe Build Slice B preparation does not change that status. Phase 1 becomes Ready only when every entry criterion below is satisfied.
+Phase 1 is Waiting for a selected Apple developer team, local physical signing, and a paired physical iPhone and Apple Watch. Simulator safe Build Slice B and Build Slice B.1 preparation do not change that status. Phase 1 becomes Ready only when every entry criterion below is satisfied.
 
 ## Phase 0A: Repository and architecture foundation
 
@@ -129,8 +129,12 @@ Useful simulator work may prepare a physical experiment without pretending the e
 6. Versioned diagnostic JSON that excludes biometric values, participant identity, and persistent device identifiers.
 7. Debug authorization fixtures for request needed, request recorded, workout write denied, unavailable, needs companion, and sanitized request failure states.
 8. Deterministic phone unit and interface coverage plus Watch unit coverage for the prepared states.
+9. A Build Slice B.1 platform neutral session projector with legal transition enforcement, one session and authority per event log, contiguous sequences, exact duplicate idempotence, conflicting duplicate rejection, projected participant actions, and typed interruption reasons.
+10. A Debug only `COHERENCE_SESSION_FIXTURE=interactive` lifecycle service and Watch surface for synthetic start, pause, resume, end, keep, discard, and restart rehearsal.
+11. An explicit phone notice that synthetic Watch session state is not mirrored.
+12. Tests for complete save and discard paths, interruption projection, invalid transition refusal, duplicate and sequence invariants, Codable projection, Watch restart, and separation between authorization and session creation.
 
-This preparation satisfies no physical entry or exit criterion. Root local validation passes with nine phone tests and five Watch tests on a temporary paired simulator set. Hosted validation remains a merge gate. HealthKit authorization behavior, signing, background behavior, battery measurements, and every other physical result remain absent.
+Build Slice B.1 is simulator preparation, not Build Slice C. It captures no samples, starts no HealthKit workout, writes no persistence, and performs no Watch to phone mirroring. This preparation satisfies no physical entry or exit criterion. Root validation now includes ten phone tests, twelve Watch tests, and eleven shared CoherenceCore lifecycle tests on a temporary paired simulator set. Hosted validation remains a merge gate. HealthKit authorization behavior, signing, background behavior, battery measurements, and every other physical result remain absent. Phase 1 and Build Slice C remain Waiting.
 
 ### Xcode application work
 

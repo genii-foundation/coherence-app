@@ -15,10 +15,12 @@ enum WatchCompositionRoot {
       configuration: configuration,
       plan: .watchMeasurement
     )
+    let sessions = BootstrapSessionServices(configuration: configuration)
     return WatchAppComposition(
       model: WatchAppModel(
         sensorServices: sensors,
-        authorizationServices: authorization
+        authorizationServices: authorization,
+        sessionServices: sessions
       )
     )
   }

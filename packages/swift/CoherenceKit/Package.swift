@@ -42,5 +42,9 @@ let package = Package(
       name: "CoherenceCoreVerification",
       dependencies: ["CoherenceCore"]
     ),
+    .testTarget(
+      name: "CoherenceCoreTests",
+      dependencies: ["CoherenceCore"]
+    ),
   ]
 )

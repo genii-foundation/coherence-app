@@ -27,7 +27,18 @@ Build Slice B now provides a simulator safe shell for the first authorization ex
 6. The phone can preview and share a versioned diagnostic JSON snapshot. That snapshot explicitly excludes biometric values, participant identity, and persistent device identifiers.
 7. Apple reporting that a request is unnecessary remains distinct from a locally recorded request. Request status inspection failures retain only a sanitized numeric diagnostic code.
 
-This preparation is not physical experiment evidence. Root local validation passes with nine phone tests and five Watch tests on a temporary paired simulator set, and hosted validation remains a merge gate. Real HealthKit sheets, permission choices, query behavior, signing, background execution, sampling, battery, and connectivity remain untested until the required devices and authenticated Xcode setup are available.
+Build Slice B.1 also provides simulator only lifecycle preparation:
+
+1. `CoherenceCore` projects session state from an ordered event log and rejects invalid transitions, sequence gaps or regressions, session or authority changes, and conflicting duplicate identifiers. Exact duplicate events are idempotent.
+2. Session interruption reasons are typed, and an interruption while recording projects to paused with resume and end available.
+3. Debug composition accepts `COHERENCE_SESSION_FIXTURE=interactive` and exposes synthetic Watch controls for start, pause, resume, end, keep, discard, and restart.
+4. The Watch states that the fixture captures no samples and uses no HealthKit. Its deterministic current and terminal event logs exist only in memory for the current application run, and replay failure cannot be mistaken for an absent session.
+5. The phone states that it does not receive the Watch rehearsal state. No mirroring or WatchConnectivity behavior is implied.
+6. Eleven shared CoherenceCore lifecycle tests, seven additional Watch lifecycle tests, and phone fixture independence and nonmirroring assertions cover this preparation.
+
+Build Slice B.1 is not Build Slice C. This preparation starts no workout, reads no sensor, captures no sample, writes no HealthKit record, persists no event, and transfers no state. Phase 1 and Build Slice C remain Waiting.
+
+This preparation is not physical experiment evidence. Root validation now includes ten phone tests, twelve Watch tests, and eleven shared CoherenceCore lifecycle tests on a temporary paired simulator set, and hosted validation remains a merge gate. Real HealthKit sheets, permission choices, query behavior, signing, background execution, sampling, battery, and connectivity remain untested until the required devices and authenticated Xcode setup are available.
 
 ## Capability questions
 
