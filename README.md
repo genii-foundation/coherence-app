@@ -8,20 +8,22 @@ This is a cross platform monorepo with Apple as its first implementation and emp
 
 The repository currently includes:
 
-1. Thin SwiftUI source shells for the iPhone and Apple Watch applications.
-2. HealthKit entitlement and permission source files for both applications.
-3. A local Swift package with compile boundaries for provisional domain models, acquisition, persistence, synchronization, and deterministic features.
-4. Versioned `SensorSample`, `SampleBatch`, clock, provenance, quality, consent, and session models, plus an explicit home for canonical language neutral contracts.
-5. Shared package contract verification and a continuous integration entry point.
-6. A thesis grounded [architecture overview](docs/architecture/overview.md).
-7. A measured [Apple capability spike plan](docs/roadmap/apple-capability-spike.md).
-8. A [unified phased roadmap](docs/roadmap/README.md) that controls what to build next.
-9. A living [open technical questions register](docs/architecture/open-technical-questions.md).
-10. A target by target [Xcode application roadmap](docs/roadmap/xcode-application-roadmap.md).
-11. A durable [continuity brief synthesis](docs/research/continuity-brief-synthesis.md).
-12. An accepted [monorepo platform boundary decision](docs/architecture/decisions/0001-monorepo-platform-boundaries.md).
+1. Native SwiftUI application targets for iPhone and Apple Watch, plus phone unit, phone interface, and Watch unit test targets.
+2. A versioned XcodeGen specification and committed generated Xcode project with shared `Coherence` and `CoherenceWatch` schemes.
+3. HealthKit entitlement and permission source files for both applications.
+4. A local Swift package with compile boundaries for provisional domain models, acquisition, persistence, synchronization, and deterministic features.
+5. Versioned `SensorSample`, `SampleBatch`, clock, provenance, quality, consent, and session models, plus an explicit home for canonical language neutral contracts.
+6. Deterministic synthetic sensor composition for simulator tests, clearly labeled as synthetic provenance.
+7. Shared package and native application validation in continuous integration.
+8. A thesis grounded [architecture overview](docs/architecture/overview.md).
+9. A measured [Apple capability spike plan](docs/roadmap/apple-capability-spike.md).
+10. A [unified phased roadmap](docs/roadmap/README.md) that controls what to build next.
+11. A living [open technical questions register](docs/architecture/open-technical-questions.md).
+12. A target by target [Xcode application roadmap](docs/roadmap/xcode-application-roadmap.md).
+13. A durable [continuity brief synthesis](docs/research/continuity-brief-synthesis.md).
+14. An accepted [monorepo platform boundary decision](docs/architecture/decisions/0001-monorepo-platform-boundaries.md).
 
-The native Xcode project is the one intentionally missing piece. Xcode 26.6 and the iOS and watchOS platform SDKs are now installed, but Apple's license and first launch setup still require administrator approval. The source and target specification are ready in [apps/apple](apps/apple/README.md).
+The native Apple bootstrap is complete. `apps/apple/project.yml` is the source of truth for `apps/apple/Coherence.xcodeproj`, and XcodeGen 2.45.4 reproduces the committed project. See [apps/apple](apps/apple/README.md) for target details and local toolchain guidance.
 
 ## Repository shape
 
@@ -51,10 +53,13 @@ Run:
 
 ```sh
 ./scripts/doctor.sh
+./scripts/generate-apple-project.sh
 ./scripts/validate.sh
 ```
 
-The validation script currently builds every shared Swift module and runs its contract verification. Once the native Xcode project is committed, the same script should also build the iPhone and watchOS targets and run their simulator tests. The Makefile provides matching convenience targets after Xcode activation.
+The generation command requires XcodeGen 2.45.4 and rewrites the committed Xcode project from its versioned specification. Root validation builds every shared Swift module, verifies the core contracts, builds the iPhone application with its embedded Watch companion, builds the Watch application independently, and runs phone and Watch simulator smoke tests. `make project` and `make validate` provide matching convenience targets.
+
+On the current macOS 27 beta host, Xcode 26.6 command line builds work, but its graphical application is not a supported pairing. Use Xcode 27 beta for local graphical development once it has been downloaded through an authenticated Apple developer account. Continuous integration remains pinned to Xcode 26.6 on a supported macOS 26 runner.
 
 ## Product boundary
 

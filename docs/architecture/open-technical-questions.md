@@ -1,6 +1,6 @@
 # Open technical questions
 
-Last reviewed: July 10, 2026
+Last reviewed: July 12, 2026
 
 This is the living register for unresolved product, scientific, security, privacy, data, and platform architecture questions. A question remains here after it is decided, with its status changed to Decided and a link to the decision record. This preserves the history of what was uncertain and why the project chose a path.
 
@@ -179,7 +179,7 @@ Questions:
 
 ### OTQ-009: Which channel owns live state and which owns durable transfer?
 
-Status: Investigating in Phase 1
+Status: Open
 
 Decision deadline: Phase 1 exit
 
@@ -215,7 +215,7 @@ Questions:
 
 ### OTQ-011: How precise must clock synchronization be?
 
-Status: Investigating in Phase 1
+Status: Open
 
 Decision deadline: Phase 1 exit for cardiac windows, revisited per modality
 
@@ -249,7 +249,7 @@ Questions:
 
 ### OTQ-013: What HealthKit workout classification is legitimate?
 
-Status: Investigating in Phase 1
+Status: Open
 
 Decision deadline: Phase 1 exit
 
@@ -289,6 +289,8 @@ Decision deadline: Phase 1 exit
 
 Current leaning: iOS 18 and watchOS 11 are provisional development floors. Actual support should follow capability, battery, adoption, and testing evidence.
 
+Phase 0B evidence: Both targets compile and pass simulator smoke coverage at these floors. This proves the target graph, not a physical device support promise. Phase 1 battery, background, API, and hardware evidence remains the decision input.
+
 Questions:
 
 1. What is the oldest Watch that sustains required collection and battery life?
@@ -300,7 +302,7 @@ Questions:
 
 ### OTQ-016: What battery, thermal, and latency budgets are acceptable?
 
-Status: Investigating in Phase 1
+Status: Open
 
 Decision deadline: Phase 1 exit
 

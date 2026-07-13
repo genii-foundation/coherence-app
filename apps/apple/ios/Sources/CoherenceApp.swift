@@ -1,22 +1,13 @@
-import CoherenceCore
 import SwiftUI
 
+@MainActor
 @main
 struct CoherenceApp: App {
+  private let composition = PhoneCompositionRoot.make()
+
   var body: some Scene {
     WindowGroup {
-      NavigationStack {
-        ContentUnavailableView {
-          Label("Coherence", systemImage: "waveform.path.ecg")
-        } description: {
-          Text("The Apple capability spike starts here.")
-        } actions: {
-          Text("Schema version \(SampleBatch.currentSchemaVersion)")
-            .font(.caption)
-            .foregroundStyle(.secondary)
-        }
-        .navigationTitle("Coherence")
-      }
+      PhoneRootView(model: composition.model)
     }
   }
 }
