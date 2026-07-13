@@ -11,6 +11,15 @@ enum WatchCompositionRoot {
   ) -> WatchAppComposition {
     let configuration = AppleRuntimeConfiguration(arguments: arguments)
     let sensors = BootstrapSensorServices(configuration: configuration)
-    return WatchAppComposition(model: WatchAppModel(sensorServices: sensors))
+    let authorization = BootstrapAuthorizationServices(
+      configuration: configuration,
+      plan: .watchMeasurement
+    )
+    return WatchAppComposition(
+      model: WatchAppModel(
+        sensorServices: sensors,
+        authorizationServices: authorization
+      )
+    )
   }
 }

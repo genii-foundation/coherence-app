@@ -113,25 +113,54 @@ Physical installation, generated signing entitlement inspection, and platform ca
 
 Roadmap phase: 1
 
-### Phone work
+Status: Simulator preparation complete. Physical validation is Waiting.
 
-1. Create a privacy explanation screen that precedes the system authorization sheet without imitating it.
-2. Request the minimum first HealthKit types.
-3. Show authorized feature readiness without claiming to know which read types were denied.
-4. Add a diagnostic screen for application version, OS, device, permissions requested, and synthetic run identifier.
-5. Add JSON diagnostic export with biometric values excluded.
+### Simulator safe work implemented
 
-### Watch work
+The phone shell now:
 
-1. Explain explicit measurement and workout behavior.
-2. Request Watch HealthKit access at the moment collection becomes relevant.
-3. Show ready, unavailable, and needs phone states without treating temporary disconnection as failure.
+1. Presents a Coherence privacy explanation before the system authorization sheet.
+2. Names the minimum first acquisition intent and its purpose. The initial phone plan requests read access to heart rate history only.
+3. Records an authorization request without treating request completion as proof that read access was granted.
+4. Projects privacy, requested access, overview, and diagnostic destinations through the phone application model.
+5. Produces a versioned diagnostic JSON snapshot with biometric values, participant identity, and persistent device identifiers excluded.
 
-### Shared work
+The Watch shell now:
 
-1. Define permission intents and readiness projections in platform neutral terms.
-2. Add fake authorization outcomes for interface tests.
-3. Record authorization requests as local events without claiming access was granted.
+1. Explains that preparation may request live heart rate read access and workout write access for an explicit measurement.
+2. Requires a participant action to prepare measurement. No workout or collection starts in this slice.
+3. Projects request needed, request recorded, unavailable, needs companion, write denied, and sanitized failure states.
+
+The shared implementation now:
+
+1. Defines platform neutral acquisition intents, readiness, observations, request records, service errors, and an authorization service protocol in `CoherenceAcquisition`.
+2. Keeps the concrete HealthKit service inside the Apple application boundary. The phone plan maps to heart rate history read access. The Watch plan maps to live heart rate read access and workout write access.
+3. Treats individual HealthKit read choices as `notInspectable`. Only the workout write status is projected from the HealthKit authorization status API.
+4. Uses `getRequestStatusForAuthorization` only to determine whether the system may need to ask again. It does not interpret that status as a per-type read result.
+5. Records stable request identifiers, results, evidence source, and sanitized error codes without recording biometric values.
+6. Distinguishes Apple's `request unnecessary` status from an application recorded request, and preserves sanitized request status inspection failures.
+
+### Deterministic fixtures
+
+Debug composition accepts `COHERENCE_AUTHORIZATION_FIXTURE=<value>` with `needs-request`, `request-recorded`, `write-denied`, `unavailable`, `needs-companion`, and `request-failure`. When `COHERENCE_USE_FAKE_SENSORS=1` is present without an explicit authorization fixture, the authorization shell defaults to `needs-request`.
+
+Fixture runs use fixed run, request, and observation values. This makes phone unit tests, the phone interface flow, and Watch unit tests deterministic without displaying a real HealthKit sheet. Release builds do not select fixtures.
+
+### Validation
+
+1. Phone tests cover the privacy to permission to overview transition, request recording, noninspectable read state, sanitized failure state, diagnostic JSON redaction, stale refresh rejection, and inspection error preservation.
+2. The phone interface test covers the complete synthetic privacy, request, overview, and diagnostic flow without a system alert.
+3. Watch tests cover request recording, noninspectable live heart rate read state, inspectable workout write state, unavailable, needs companion, write denied, and sanitized failure fixtures.
+4. `scripts/validate-apple.sh` remains the focused local command. `scripts/validate.sh` remains the root repository command.
+5. Current evidence is simulator composition. Root local validation passes with nine phone tests and five Watch tests on a temporary paired simulator set. Hosted validation remains a merge gate and does not establish physical device behavior.
+
+### Physical work still required
+
+1. Sign and launch both targets on the paired physical devices.
+2. Confirm the staged phone and Watch HealthKit sheets match the intended read and write sets.
+3. Verify behavior when a participant allows or declines each available choice, without inferring individual read choices from query results.
+4. Export and inspect redacted diagnostics from both physical devices.
+5. Record unsupported and inconclusive behavior before changing readiness semantics.
 
 ## Build Slice C: Explicit Watch session lifecycle
 
@@ -350,14 +379,15 @@ Do not show a coherence score. During observational sessions, do not show physio
 ### Application unit tests
 
 1. Composition with fake services.
-2. Permission state projection.
+2. Permission state projection, request recording, read noninspectability, and sanitized failures.
 3. Session lifecycle and recovery.
 4. Connectivity state versus recording state.
 5. Save, discard, export, and delete intents.
+6. Diagnostic schema and explicit redaction invariants.
 
 ### Interface tests
 
-1. Phone launch and privacy flow in fake mode.
+1. Phone launch, privacy, permission, overview, and diagnostic export flow in fake mode.
 2. Start and stop projection in fake mode.
 3. Timeline gap and uncertainty explanation.
 4. Export and deletion confirmation flows.
@@ -383,12 +413,14 @@ Continuous integration now:
 
 ## Next implementation starting point
 
-Phase 0B is complete. The next implementation work is Phase 1, but it remains waiting until physical device entry criteria are satisfied:
+Phase 0B is complete, and the simulator safe portion of Build Slice B is prepared. Phase 1 remains Waiting until its physical device entry criteria are satisfied:
 
 1. Install a supported graphical Xcode for the host operating system. On the current macOS 27 beta host, that means Xcode 27 beta, which still requires an authenticated Apple download.
 2. Select the Providence Apple developer team and place its identifier only in ignored local configuration.
 3. Prove both applications install and launch on a paired physical iPhone and Apple Watch.
 4. Define a synthetic participant and a redacted export location.
 5. Review the capability spike protocol and minimum device matrix.
-6. Begin Build Slice B with the staged permission and diagnostic shell.
-7. Record physical evidence before promoting any platform assumption into a production contract.
+6. Run the staged phone and Watch authorization flows on physical devices and preserve redacted evidence.
+7. Confirm the diagnostic JSON remains free of biometric values, participant identity, and persistent device identifiers on those devices.
+8. Begin Build Slice C only after recording the authorization capability results and any required corrections.
+9. Record physical evidence before promoting any platform assumption into a production contract.

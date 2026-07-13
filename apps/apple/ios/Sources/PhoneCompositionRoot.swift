@@ -11,6 +11,20 @@ enum PhoneCompositionRoot {
   ) -> PhoneAppComposition {
     let configuration = AppleRuntimeConfiguration(arguments: arguments)
     let sensors = BootstrapSensorServices(configuration: configuration)
-    return PhoneAppComposition(model: PhoneAppModel(sensorServices: sensors))
+    let authorization = BootstrapAuthorizationServices(
+      configuration: configuration,
+      plan: .phoneHistory
+    )
+    let diagnostics = AppleDiagnosticContext.current(
+      configuration: configuration,
+      role: .phone
+    )
+    return PhoneAppComposition(
+      model: PhoneAppModel(
+        sensorServices: sensors,
+        authorizationServices: authorization,
+        diagnosticContext: diagnostics
+      )
+    )
   }
 }

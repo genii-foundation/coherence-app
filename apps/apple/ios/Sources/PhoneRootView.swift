@@ -5,27 +5,41 @@ struct PhoneRootView: View {
 
   var body: some View {
     NavigationStack {
-      VStack(spacing: 16) {
-        Image(systemName: "waveform.path.ecg")
-          .font(.system(size: 52))
-          .foregroundStyle(.green)
-
-        Text("Interpersonal measurement, with consent")
-          .font(.headline)
-          .multilineTextAlignment(.center)
-
-        Text(model.sensorMode.displayName)
-          .font(.subheadline)
-          .foregroundStyle(model.sensorMode == .synthetic ? .orange : .secondary)
-          .accessibilityIdentifier("coherence.phone.sensor-mode")
-
-        Text("Schema version \(model.schemaVersion)")
-          .font(.caption)
-          .foregroundStyle(.secondary)
-          .accessibilityIdentifier("coherence.phone.schema-version")
+      Group {
+        switch model.destination {
+        case .privacy:
+          PhonePrivacyView(onContinue: model.continueFromPrivacy)
+        case .permissions:
+          PhonePermissionsView(
+            snapshot: model.authorizationSnapshot,
+            errorCode: model.authorizationErrorCode,
+            isRequesting: model.isRequestingAuthorization,
+            onBack: model.showPrivacy,
+            onRequest: {
+              Task { await model.requestAuthorization() }
+            },
+            onContinue: model.showOverview
+          )
+        case .overview:
+          PhoneOverviewView(
+            sensorMode: model.sensorMode,
+            schemaVersion: model.schemaVersion,
+            authorizationSnapshot: model.authorizationSnapshot,
+            onReviewAccess: model.showPermissions,
+            onShowDiagnostics: model.showDiagnostics
+          )
+        case .diagnostics:
+          PhoneDiagnosticsView(
+            snapshot: model.diagnosticSnapshot,
+            json: model.diagnosticJSON,
+            onBack: model.showOverview
+          )
+        }
       }
-      .padding(24)
       .navigationTitle("Coherence")
+    }
+    .task {
+      await model.refreshAuthorization()
     }
   }
 }

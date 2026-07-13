@@ -15,6 +15,20 @@ This is the first implementation milestone. Its purpose is to replace platform a
 
 The native project, package links, simulator runtimes, fake composition, native tests, root validation, and continuous integration were completed in Phase 0B. They are prerequisites, not deliverables to rediscover during this spike.
 
+## Simulator preparation available
+
+Build Slice B now provides a simulator safe shell for the first authorization experiments:
+
+1. The phone explains privacy and the minimum requested access before invoking Apple Health. Its first plan requests heart rate history read access only.
+2. The Watch explains explicit measurement before preparing access. Its first plan requests live heart rate read access and workout write access, but does not start a workout or collect samples.
+3. Platform neutral authorization state lives in `CoherenceAcquisition`. The actual HealthKit implementation remains inside the Apple adapter and application composition boundary.
+4. Read authorization is always presented as noninspectable. A completed request says only that the request completed. HealthKit write status can be inspected for the workout type.
+5. Debug fixtures cover `needs-request`, `request-recorded`, `write-denied`, `unavailable`, `needs-companion`, and `request-failure` through `COHERENCE_AUTHORIZATION_FIXTURE=<value>`.
+6. The phone can preview and share a versioned diagnostic JSON snapshot. That snapshot explicitly excludes biometric values, participant identity, and persistent device identifiers.
+7. Apple reporting that a request is unnecessary remains distinct from a locally recorded request. Request status inspection failures retain only a sanitized numeric diagnostic code.
+
+This preparation is not physical experiment evidence. Root local validation passes with nine phone tests and five Watch tests on a temporary paired simulator set, and hosted validation remains a merge gate. Real HealthKit sheets, permission choices, query behavior, signing, background execution, sampling, battery, and connectivity remain untested until the required devices and authenticated Xcode setup are available.
+
 ## Capability questions
 
 The spike must answer these questions with exported evidence.
@@ -22,7 +36,7 @@ The spike must answer these questions with exported evidence.
 ### Authorization and history
 
 1. Which requested HealthKit types are available on every selected device and OS combination?
-2. How does limited historical authorization appear to the app?
+2. Since HealthKit keeps individual read choices private, how should the app distinguish limited history, no matching samples, and an inaccessible source without claiming to know the participant's choice?
 3. Can anchored imports resume without duplicates after process termination?
 4. Are additions and deletions reconciled correctly?
 5. Which `HKSourceRevision`, `HKDevice`, UUID, metadata, and algorithm version fields are present for each sample type?
@@ -90,7 +104,7 @@ Each test run should produce:
 8. Connection state and transfer events.
 9. Battery level and thermal state snapshots.
 10. Expected disruptions with their exact timestamps.
-11. A machine readable JSON export and a concise human observation log.
+11. A machine readable JSON export with biometric values, participant identity, and persistent device identifiers excluded from its diagnostic section, plus a concise human observation log.
 
 Run these activities separately:
 
