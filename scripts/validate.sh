@@ -16,6 +16,7 @@ fi
 
 cd "$root/packages/swift/CoherenceKit"
 DEVELOPER_DIR=/Library/Developer/CommandLineTools swift build --build-system native
+swift test --build-system native
 DEVELOPER_DIR=/Library/Developer/CommandLineTools swift run --build-system native CoherenceCoreVerification
 
 cd "$root"

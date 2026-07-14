@@ -3,6 +3,7 @@ import SwiftUI
 
 struct PhoneOverviewView: View {
   let sensorMode: AppleSensorMode
+  let sessionFixtureAvailable: Bool
   let schemaVersion: Int
   let authorizationSnapshot: MeasurementAuthorizationSnapshot
   let onReviewAccess: () -> Void
@@ -35,6 +36,17 @@ struct PhoneOverviewView: View {
           identifier: "coherence.phone.sensor-mode"
         )
 
+        if sessionFixtureAvailable {
+          ReadinessCard(
+            icon: "applewatch",
+            title: "Watch session rehearsal",
+            detail:
+              "Start the synthetic lifecycle in the Watch app. This phone does not receive Watch session state yet.",
+            identifier: "coherence.phone.session-rehearsal.title",
+            detailIdentifier: "coherence.phone.session-rehearsal.detail"
+          )
+        }
+
         HStack(spacing: 12) {
           Button("Review access", action: onReviewAccess)
             .buttonStyle(.bordered)
@@ -61,6 +73,7 @@ private struct ReadinessCard: View {
   let title: String
   let detail: String
   let identifier: String
+  var detailIdentifier: String? = nil
 
   var body: some View {
     HStack(alignment: .top, spacing: 14) {
@@ -76,6 +89,7 @@ private struct ReadinessCard: View {
         Text(detail)
           .font(.subheadline)
           .foregroundStyle(.secondary)
+          .accessibilityIdentifier(detailIdentifier ?? "\(identifier).detail")
       }
     }
     .padding(16)

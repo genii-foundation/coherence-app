@@ -23,7 +23,8 @@ enum PhoneCompositionRoot {
       model: PhoneAppModel(
         sensorServices: sensors,
         authorizationServices: authorization,
-        diagnosticContext: diagnostics
+        diagnosticContext: diagnostics,
+        sessionFixtureAvailable: configuration.sessionFixture == .interactive
       )
     )
   }

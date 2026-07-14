@@ -44,6 +44,8 @@ Current leaning: Avoid declaring one universal source of truth. Use explicit aut
 
 A platform health repository is likely authoritative for samples and deletions it manages. HealthKit is the first implementation. Google Health Connect or another Android repository may later hold the same role for records it manages. The Coherence local store is likely authoritative for session boundaries, consent receipts, annotations, normalized acquisition records, transfer state, quality decisions, and derived features. A future server is likely authoritative only for the exact uploaded batch, server acknowledgement, event policy, and group outputs it computes.
 
+Build Slice B.1 preparation: The provisional Swift projector derives session state from one ordered event log. It enforces one session identifier, one authority device identifier, contiguous sequences, legal transitions, exact duplicate idempotence, conflicting duplicate rejection, and typed interruption reasons. The Debug fixture keeps that log only in memory and captures no samples. This establishes testable semantics, not a durable authority decision. Persistence, restart recovery, Watch workout authority, HealthKit save behavior, phone mirroring, and cross platform contract representation remain open.
+
 Questions:
 
 1. Must deletion of a HealthKit sample remove its normalized Coherence copy and every derived result?
@@ -187,6 +189,8 @@ Decision deadline: Phase 1 exit
 
 Current leaning: HealthKit workout mirroring owns live session state and low latency display. WatchConnectivity owns durable sealed batches and diagnostics. The Watch store remains authoritative until phone acknowledgement.
 
+Build Slice B.1 preparation: The interactive session fixture runs only on the Watch and deliberately does not mirror. The phone displays that absence explicitly and never projects the Watch rehearsal as local session state. This proves the interface boundary and projector behavior only. It provides no evidence about workout mirroring, WatchConnectivity, reconnection, delivery ordering, or phone wake behavior.
+
 Questions:
 
 1. Which messages can workout mirroring lose, repeat, or reorder?
@@ -256,6 +260,8 @@ Status: Open
 Decision deadline: Phase 1 exit
 
 Current leaning: An explicit user visible session is mandatory. The app should not classify ordinary conversation or meals as exercise solely to increase sensor frequency. Candidate activity types need device tests and App Review analysis.
+
+Build Slice B.1 preparation: Synthetic Watch controls now exercise start, pause, resume, end, keep, discard, and restart against an in-memory event projector. The labels `saved` and `discarded` refer only to the fixture event log. No Apple workout exists, nothing is written to HealthKit or disk, and no retention policy is decided. Build Slice C and physical device evidence still own the real save and discard semantics.
 
 Questions:
 

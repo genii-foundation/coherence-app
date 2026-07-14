@@ -5,6 +5,7 @@ public enum MeasurementSessionState: String, Codable, Equatable, Sendable {
   case recording
   case paused
   case ended
+  case saved
   case discarded
 }
 

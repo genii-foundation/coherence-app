@@ -11,6 +11,7 @@ final class CoherenceAppUITests: XCTestCase {
     app.launchArguments = [
       "COHERENCE_USE_FAKE_SENSORS=1",
       "COHERENCE_AUTHORIZATION_FIXTURE=needs-request",
+      "COHERENCE_SESSION_FIXTURE=interactive",
     ]
     app.launch()
 
@@ -43,6 +44,14 @@ final class CoherenceAppUITests: XCTestCase {
     XCTAssertTrue(sensorMode.waitForExistence(timeout: 5))
     XCTAssertEqual(sensorMode.label, "Synthetic sensors active")
     XCTAssertTrue(app.staticTexts["coherence.phone.schema-version"].exists)
+    XCTAssertEqual(
+      app.staticTexts["coherence.phone.session-rehearsal.title"].label,
+      "Watch session rehearsal"
+    )
+    XCTAssertEqual(
+      app.staticTexts["coherence.phone.session-rehearsal.detail"].label,
+      "Start the synthetic lifecycle in the Watch app. This phone does not receive Watch session state yet."
+    )
 
     let diagnosticsButton = app.buttons["coherence.phone.diagnostics.open"]
     XCTAssertTrue(diagnosticsButton.exists)

@@ -152,7 +152,7 @@ Fixture runs use fixed run, request, and observation values. This makes phone un
 2. The phone interface test covers the complete synthetic privacy, request, overview, and diagnostic flow without a system alert.
 3. Watch tests cover request recording, noninspectable live heart rate read state, inspectable workout write state, unavailable, needs companion, write denied, and sanitized failure fixtures.
 4. `scripts/validate-apple.sh` remains the focused local command. `scripts/validate.sh` remains the root repository command.
-5. Current evidence is simulator composition. Root local validation passes with nine phone tests and five Watch tests on a temporary paired simulator set. Hosted validation remains a merge gate and does not establish physical device behavior.
+5. Current evidence is simulator composition. Root validation now includes ten phone tests, twelve Watch tests, and eleven shared CoherenceCore lifecycle tests on a temporary paired simulator set. Hosted validation remains a merge gate and does not establish physical device behavior.
 
 ### Physical work still required
 
@@ -162,9 +162,43 @@ Fixture runs use fixed run, request, and observation values. This makes phone un
 4. Export and inspect redacted diagnostics from both physical devices.
 5. Record unsupported and inconclusive behavior before changing readiness semantics.
 
+## Build Slice B.1: Simulator session lifecycle foundation
+
+Roadmap phase: 1 preparation
+
+Status: Simulator preparation complete. This is not Build Slice C.
+
+### Simulator safe work implemented
+
+1. Define platform neutral session commands and a lifecycle service protocol in `CoherenceAcquisition`.
+2. Project a session from its event log in `CoherenceCore` instead of mutating an independent interface state machine.
+3. Require the first event to prepare sequence 1, one session identifier and authority device identifier per log, and contiguous increasing sequence numbers.
+4. Treat exact duplicate events as idempotent and reject changed events that reuse an event identifier.
+5. Reject illegal lifecycle transitions and derive available participant actions from projected state.
+6. Preserve typed interruption reasons and project an interruption of an active recording to paused.
+7. Provide `COHERENCE_SESSION_FIXTURE=interactive` only in Debug composition.
+8. Add Watch controls for synthetic start, pause, resume, end, keep, discard, and restart.
+9. Label the Watch surface as synthetic and state that it captures no samples and uses no HealthKit.
+10. Tell the phone participant that Watch rehearsal state is not mirrored.
+
+The fixture stores only deterministic in-memory current and terminal session events for the current run. Projection retrieval is throwing, so a corrupt log cannot masquerade as no session or be replaced by a new preparation event. It starts no `HKWorkoutSession`, creates no `HKLiveWorkoutBuilder`, reads no sensor, creates no sample batch, writes no HealthKit object, persists nothing, and sends nothing to the phone.
+
+### Validation
+
+1. Eleven shared CoherenceCore lifecycle tests cover complete saved lifecycle, prepared discard, empty and malformed first events, invalid and terminal transitions, deterministic replay, exact and conflicting duplicates, sequence gap and regression, session and authority mismatch, typed interruption, and Codable round trip.
+2. Seven additional Watch tests cover the complete saved lifecycle, discard and restart with distinct deterministic identifiers, terminal log retention, corrupt replay preservation, authorization without session creation, invalid command refusal, and repeated start intent serialization.
+3. Phone tests prove that sensor and session fixtures remain independently selectable, and the interface test asserts the nonmirroring notice only when the session fixture is active.
+4. Release composition excludes the interactive fixture.
+
+### Physical and durable work still required
+
+Build Slice C remains Waiting. It owns the actual workout session and builder, sensor samples, persistent event and sample storage, physical interruption and background behavior, save and discard integration with HealthKit, and phone mirroring preparation. None of those capabilities are implied by this simulator rehearsal.
+
 ## Build Slice C: Explicit Watch session lifecycle
 
 Roadmap phase: 1
+
+Status: Waiting for Phase 1 physical entry criteria and Build Slice B physical validation.
 
 ### Watch work
 
@@ -413,7 +447,7 @@ Continuous integration now:
 
 ## Next implementation starting point
 
-Phase 0B is complete, and the simulator safe portion of Build Slice B is prepared. Phase 1 remains Waiting until its physical device entry criteria are satisfied:
+Phase 0B is complete, and the simulator safe portions of Build Slice B and Build Slice B.1 are prepared. Phase 1 and Build Slice C remain Waiting until the physical device entry criteria are satisfied:
 
 1. Install a supported graphical Xcode for the host operating system. On the current macOS 27 beta host, that means Xcode 27 beta, which still requires an authenticated Apple download.
 2. Select the Providence Apple developer team and place its identifier only in ignored local configuration.

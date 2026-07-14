@@ -61,6 +61,7 @@ struct PhoneCompositionTests {
     #expect(composition.model.sensorMode == .synthetic)
     #expect(composition.model.sensorAdapter is SyntheticSensorAdapter)
     #expect(composition.model.authorizationSnapshot.readiness == .requestNeeded)
+    #expect(composition.model.sessionFixtureAvailable == false)
     #expect(
       composition.model.authorizationSnapshot.observations[.historicalHeartRate]
         == .notInspectable
@@ -91,6 +92,23 @@ struct PhoneCompositionTests {
 
     #expect(composition.model.sensorMode == .unavailable)
     #expect(composition.model.sensorAdapter is UnavailableSensorAdapter)
+    #expect(composition.model.sessionFixtureAvailable == false)
+  }
+
+  @Test
+  @MainActor
+  func sessionAndSensorFixturesRemainIndependent() {
+    let sessionOnly = PhoneCompositionRoot.make(
+      arguments: ["COHERENCE_SESSION_FIXTURE=interactive"]
+    )
+    let sensorOnly = PhoneCompositionRoot.make(
+      arguments: [AppleRuntimeConfiguration.fakeSensorArgument]
+    )
+
+    #expect(sessionOnly.model.sessionFixtureAvailable)
+    #expect(sessionOnly.model.sensorMode == .unavailable)
+    #expect(sensorOnly.model.sessionFixtureAvailable == false)
+    #expect(sensorOnly.model.sensorMode == .synthetic)
   }
 
   @Test
@@ -207,7 +225,8 @@ struct PhoneCompositionTests {
       diagnosticContext: AppleDiagnosticContext.current(
         configuration: configuration,
         role: .phone
-      )
+      ),
+      sessionFixtureAvailable: false
     )
 
     let refresh = Task { await model.refreshAuthorization() }
@@ -252,7 +271,8 @@ struct PhoneCompositionTests {
       diagnosticContext: AppleDiagnosticContext.current(
         configuration: configuration,
         role: .phone
-      )
+      ),
+      sessionFixtureAvailable: false
     )
 
     #expect(model.diagnosticSnapshot.authorizationInspectionErrorCode == errorCode)

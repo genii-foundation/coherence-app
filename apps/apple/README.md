@@ -66,7 +66,7 @@ Platform neutral authorization intents, readiness, observations, request records
 
 Apple reporting that a request is unnecessary is projected separately as `requestNotNeeded`. Only a successful request initiated by this running application produces `requestRecorded` and a local request identifier. A failed request status inspection retains a sanitized numeric diagnostic code instead of silently masquerading as a first run.
 
-## Synthetic sensor and authorization fixtures
+## Synthetic sensor, authorization, and session fixtures
 
 Both shared schemes pass this Debug launch argument:
 
@@ -93,6 +93,26 @@ Supported values are:
 
 Fake sensor mode defaults to the `needs-request` authorization fixture when no fixture value is supplied. Fixtures use fixed run, request, and observation values so unit and interface tests are deterministic. Fixtures never replace physical HealthKit evidence.
 
+Build Slice B.1 adds a separate Debug only session fixture:
+
+```text
+COHERENCE_SESSION_FIXTURE=interactive
+```
+
+This fixture rehearses the session lifecycle on the Watch with synthetic controls for start, pause, resume, end, keep, discard, and restart. It does not start an Apple workout, read a sensor, create a sample batch, write to HealthKit, persist to disk, or mirror state to the phone. Release builds ignore the fixture. The phone therefore shows an explicit notice that the Watch rehearsal is not mirrored instead of dressing absence up as distributed systems progress.
+
+The platform neutral lifecycle service protocol lives in `CoherenceAcquisition`. `CoherenceCore` owns the event projector and its provisional invariants:
+
+1. A log must begin with exactly one preparation event at sequence number 1.
+2. Applied events must retain one session identifier and one authority device identifier.
+3. Sequence numbers must be contiguous and increasing.
+4. An exact duplicate event is idempotent, while a changed event that reuses an identifier is rejected.
+5. Only legal prepared, recording, paused, ended, saved, and discarded transitions project successfully.
+6. Interruptions use typed reasons and pause an active recording.
+7. Available participant actions are derived from projected state, not maintained as a second source of truth.
+
+The interactive Apple fixture keeps current and terminal event logs only in memory for the current application run. Replay failures remain explicit and cannot be replaced by silently preparing a new session. This is Build Slice B.1 simulator preparation, not Build Slice C. Build Slice C still requires a real `HKWorkoutSession`, `HKLiveWorkoutBuilder`, sample capture, persistence, physical interruption behavior, and explicit save and discard evidence.
+
 ## Privacy safe diagnostics
 
 The phone diagnostic JSON contains application version and build, platform and device class, operating system version, the per-run identifier, export generation time, authorization observation time, sensor mode, authorization readiness, HealthKit availability, evidence source, requested acquisition intents, projected authorization observations, the latest request identifier and result when available, a sanitized request error code, and a sanitized authorization inspection error code.
@@ -109,6 +129,6 @@ Keep HealthKit, WatchConnectivity, workout mirroring, and Apple framework types 
 
 Build Slice B adds a concrete HealthKit authorization adapter and the staged interface around it. It does not add a HealthKit sample query, workout session, live collection, WatchConnectivity transfer, database, account, or backend. Those capabilities still require Phase 1 physical device evidence. Select the Providence Apple developer team and keep its identifier in ignored local configuration only when physical signing begins.
 
-Phase 1 remains Waiting. Current evidence is simulator safe composition. Root local validation passes with nine phone tests and five Watch tests on a temporary paired simulator set. Hosted validation remains a merge gate and cannot substitute for physical authorization, collection, background, battery, or signing evidence.
+Phase 1 remains Waiting. Current evidence is simulator safe composition. Root validation now includes ten phone tests, twelve Watch tests, and eleven shared CoherenceCore lifecycle tests on a temporary paired simulator set. Hosted validation remains a merge gate and cannot substitute for physical authorization, collection, background, battery, or signing evidence.
 
 The Watch target is provisionally configured as a companion that is not installed independently. This does not prevent an installed Watch application from buffering a measurement while its phone is temporarily unreachable. Independent installation and runtime disconnection are separate questions, and the final setting belongs to the Phase 1 capability evidence.

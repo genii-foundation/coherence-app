@@ -23,6 +23,7 @@ struct PhoneRootView: View {
         case .overview:
           PhoneOverviewView(
             sensorMode: model.sensorMode,
+            sessionFixtureAvailable: model.sessionFixtureAvailable,
             schemaVersion: model.schemaVersion,
             authorizationSnapshot: model.authorizationSnapshot,
             onReviewAccess: model.showPermissions,

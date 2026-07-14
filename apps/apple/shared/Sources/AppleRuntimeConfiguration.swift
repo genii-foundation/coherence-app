@@ -23,9 +23,14 @@ enum AppleAuthorizationFixture: String, Equatable, Sendable {
   case requestFailure = "request-failure"
 }
 
+enum AppleSessionFixture: String, Equatable, Sendable {
+  case interactive
+}
+
 struct AppleRuntimeConfiguration: Equatable, Sendable {
   static let fakeSensorArgument = "COHERENCE_USE_FAKE_SENSORS=1"
   static let authorizationFixtureArgumentPrefix = "COHERENCE_AUTHORIZATION_FIXTURE="
+  static let sessionFixtureArgumentPrefix = "COHERENCE_SESSION_FIXTURE="
   static let fixtureRunIdentifier = UUID(
     uuidString: "00000000-0000-0000-0000-000000000401"
   )!
@@ -33,6 +38,7 @@ struct AppleRuntimeConfiguration: Equatable, Sendable {
 
   let sensorMode: AppleSensorMode
   let authorizationFixture: AppleAuthorizationFixture?
+  let sessionFixture: AppleSessionFixture?
   let diagnosticRunIdentifier: UUID
   let observedAt: Date
 
@@ -47,9 +53,18 @@ struct AppleRuntimeConfiguration: Equatable, Sendable {
             rawValue: String(argument.dropFirst(Self.authorizationFixtureArgumentPrefix.count))
           )
         } ?? (sensorMode == .synthetic ? .needsRequest : nil)
+      sessionFixture =
+        arguments
+        .first(where: { $0.hasPrefix(Self.sessionFixtureArgumentPrefix) })
+        .flatMap { argument in
+          AppleSessionFixture(
+            rawValue: String(argument.dropFirst(Self.sessionFixtureArgumentPrefix.count))
+          )
+        }
     #else
       sensorMode = .unavailable
       authorizationFixture = nil
+      sessionFixture = nil
     #endif
 
     if authorizationFixture == nil {
