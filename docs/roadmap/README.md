@@ -113,7 +113,7 @@ Measure what current Apple hardware and public APIs actually support before desi
 
 1. Phase 0B is Complete.
 2. At least one physical iPhone and paired Apple Watch are available.
-3. The Providence Apple developer team is selected and local signing succeeds for both applications.
+3. The GENII Foundation Apple developer team is selected and local signing succeeds for both applications.
 4. A synthetic participant and redacted export location are defined.
 5. The [capability spike protocol](apple-capability-spike.md) is reviewed.
 

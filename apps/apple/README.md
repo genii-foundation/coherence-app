@@ -127,7 +127,7 @@ Enable HealthKit and HealthKit background delivery for the iOS target. Enable He
 
 Keep HealthKit, WatchConnectivity, workout mirroring, and Apple framework types inside Apple adapters and application composition. Shared domain names must describe acquisition intent and semantics without assuming the device vendor.
 
-Build Slice B adds a concrete HealthKit authorization adapter and the staged interface around it. It does not add a HealthKit sample query, workout session, live collection, WatchConnectivity transfer, database, account, or backend. Those capabilities still require Phase 1 physical device evidence. Select the Providence Apple developer team and keep its identifier in ignored local configuration only when physical signing begins.
+Build Slice B adds a concrete HealthKit authorization adapter and the staged interface around it. It does not add a HealthKit sample query, workout session, live collection, WatchConnectivity transfer, database, account, or backend. Those capabilities still require Phase 1 physical device evidence. Select the GENII Foundation Apple developer team and keep its identifier in ignored local configuration only when physical signing begins.
 
 Phase 1 remains Waiting. Current evidence is simulator safe composition. Root validation now includes ten phone tests, twelve Watch tests, and eleven shared CoherenceCore lifecycle tests on a temporary paired simulator set. Hosted validation remains a merge gate and cannot substitute for physical authorization, collection, background, battery, or signing evidence.
 
