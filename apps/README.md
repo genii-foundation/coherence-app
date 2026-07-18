@@ -17,4 +17,4 @@ Create a platform directory only when it contains an application or an approved 
 
 Applications own composition roots, interface code, permissions, resources, and platform lifecycle. Reusable implementation logic belongs under `packages`. Canonical interchange contracts belong under `packages/contracts`. Applications must not import source from another application.
 
-Do not introduce names such as Coherence Mobile, Coherence Desktop, or Coherence Cloud unless Providence intentionally creates a distinct user facing product. Form factor is an implementation detail, and implementation details are famously terrible at respecting marketing plans.
+Do not introduce names such as Coherence Mobile, Coherence Desktop, or Coherence Cloud unless GENII Foundation intentionally creates a distinct user facing product. Form factor is an implementation detail, and implementation details are famously terrible at respecting marketing plans.

@@ -6,7 +6,7 @@ This document maps the Coherence product direction to the primary manuscripts in
 
 ## Primary product source
 
-[Volume III, The Providence Imperative](https://github.com/providence-collective/coherence-thesis/blob/main/sources/manuscripts/coherence-thesis-vol3-the-providence-imperative.md#L443-L475) is the main source for the biometric product vision.
+[Volume III, The Providence Imperative](https://github.com/genii-foundation/coherence-thesis/blob/main/editorial/sources/volumes/volume-03/manuscript.md#L443-L475) is the main source for the biometric product vision.
 
 Relevant sections establish these ideas:
 
@@ -22,7 +22,7 @@ Relevant sections establish these ideas:
 
 ## Relational and scientific boundary
 
-[Volume II, Wielding Intelligence](https://github.com/providence-collective/coherence-thesis/blob/main/sources/manuscripts/coherence-thesis-vol2-wielding-intelligence.md#L241-L283) supplies the relational foundation and the strongest skepticism.
+[Volume II, Wielding Intelligence](https://github.com/genii-foundation/coherence-thesis/blob/main/editorial/sources/volumes/volume-02/manuscript.md#L241-L283) supplies the relational foundation and the strongest skepticism.
 
 Relevant sections establish these ideas:
 
@@ -33,7 +33,7 @@ Relevant sections establish these ideas:
 
 ## Constitutional product constraints
 
-[Volume IV, Architecting Providence](https://github.com/providence-collective/coherence-thesis/blob/main/sources/manuscripts/coherence-thesis-vol4-architecting-providence.md#L775-L845) defines the larger Providence application's constitutional posture.
+[Volume IV, Architecting Providence](https://github.com/genii-foundation/coherence-thesis/blob/main/editorial/sources/volumes/volume-04/manuscript.md#L775-L845) defines the larger Providence application's constitutional posture.
 
 Relevant sections establish these ideas:
 
@@ -46,7 +46,7 @@ This creates an important product boundary. Coherence is a focused measurement a
 
 ## Experiential design source
 
-[Volume VII, Presencing Genius](https://github.com/providence-collective/coherence-thesis/blob/main/sources/manuscripts/coherence-thesis-vol7-presencing-genius.md#L119-L187) provides the experiential design principle.
+[Volume VII, Presencing Genius](https://github.com/genii-foundation/coherence-thesis/blob/main/editorial/sources/volumes/volume-07/manuscript.md#L119-L187) provides the experiential design principle.
 
 Relevant sections establish these ideas:
 

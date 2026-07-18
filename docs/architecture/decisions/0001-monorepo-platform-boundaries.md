@@ -4,7 +4,7 @@ Status: Accepted
 
 Date: 2026-07-10
 
-Owners: Providence engineering
+Owners: GENII Foundation engineering
 
 Related questions: OTQ-004, OTQ-028, OTQ-031
 

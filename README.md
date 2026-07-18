@@ -1,6 +1,6 @@
 # Coherence
 
-Coherence is Providence's dedicated ecosystem for consented interpersonal biometric measurement and reflection. Its first implementation is a native iPhone application with an Apple Watch companion. Together they will establish trustworthy acquisition, timing, provenance, quality, offline recovery, and personal baselines before the project attempts group synchrony analysis.
+Coherence is GENII Foundation's dedicated ecosystem for consented interpersonal biometric measurement and reflection. Its first implementation is a native iPhone application with an Apple Watch companion. Together they will establish trustworthy acquisition, timing, provenance, quality, offline recovery, and personal baselines before the project attempts group synchrony analysis.
 
 This is a cross platform monorepo with Apple as its first implementation and empirical proving ground. The product remains Coherence on every platform. Apple, Android, web, and future platform names identify implementation families, not separate product brands.
 

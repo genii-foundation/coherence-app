@@ -450,7 +450,7 @@ Continuous integration now:
 Phase 0B is complete, and the simulator safe portions of Build Slice B and Build Slice B.1 are prepared. Phase 1 and Build Slice C remain Waiting until the physical device entry criteria are satisfied:
 
 1. Install a supported graphical Xcode for the host operating system. On the current macOS 27 beta host, that means Xcode 27 beta, which still requires an authenticated Apple download.
-2. Select the Providence Apple developer team and place its identifier only in ignored local configuration.
+2. Select the GENII Foundation Apple developer team and place its identifier only in ignored local configuration.
 3. Prove both applications install and launch on a paired physical iPhone and Apple Watch.
 4. Define a synthetic participant and a redacted export location.
 5. Review the capability spike protocol and minimum device matrix.

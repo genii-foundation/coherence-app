@@ -7,7 +7,7 @@ This is the first implementation milestone. Its purpose is to replace platform a
 ## Required setup
 
 1. Install a graphical Xcode version supported by the host operating system. The current macOS 27 beta host requires Xcode 27 beta for graphical development, and that authenticated Apple download is still pending.
-2. Choose the Providence Apple developer team and place its identifier in ignored local configuration.
+2. Choose the GENII Foundation Apple developer team and place its identifier in ignored local configuration.
 3. Sign, install, and launch both applications on a paired physical iPhone and Apple Watch.
 4. Define a synthetic participant and an approved redacted export location.
 5. Review this protocol and name the initial hardware matrix.
